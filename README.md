@@ -10,13 +10,13 @@ Generated dispatchers provide `store.dispatch` proxy with inferred types.
 refactor payload schema @ `examples/src/store/modules/counter.ts`
 
 ```javascript
-setCount (state: CounterState, count: number): void
+setCount(state: CounterState, count: number): void
 ```
 
 ...to
 
 ```javascript
-setCount (state: CounterState, payload: { count: number }): void
+setCount(state: CounterState, payload: { count: number }): void
 ```
 
 ## Try refactor actions payload schema.
