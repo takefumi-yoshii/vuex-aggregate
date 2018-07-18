@@ -9,7 +9,7 @@ import counter, { CounterState } from './modules/counter'
 export interface StoreState {
   counter: CounterState
 }
-export interface VueInstance {
+export interface VuexBounds {
   $store: {
     state: StoreState
     commit: (type: string, payload?: any) => void

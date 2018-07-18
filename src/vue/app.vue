@@ -10,10 +10,10 @@
 <script lang='ts'>
 import Vue from 'vue'
 import { mapState } from 'vuex'
-import { VueInstance } from '../store/index'
+import { VuexBounds } from '../store/index'
 import { committers } from '../store/modules/counter'
 
-const computed: ThisType<VueInstance> = {
+const computed: ThisType<VuexBounds> = {
   count () {
     return this.$store.state.counter.count
   },
@@ -21,7 +21,7 @@ const computed: ThisType<VueInstance> = {
     return this.$store.state.counter.name
   }
 }
-const methods: ThisType<VueInstance> = {
+const methods: ThisType<VuexBounds> = {
   increment () {
     committers.increment(this.$store)
   },
