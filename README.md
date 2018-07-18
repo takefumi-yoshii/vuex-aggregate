@@ -11,7 +11,7 @@ $ yarn start
 
 launched dev-server on http://localhost:1234/
 
-## Try refactor schema
+## Try refactor payload schema
 
 refactor payload schema @ `src/store/modules/counter.ts`
 
