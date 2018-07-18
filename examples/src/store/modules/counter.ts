@@ -1,4 +1,4 @@
-import { fromMutations, fromActions, Injects, Modeler } from '../../../../src'
+import { fromMutations, fromActions, Injects, Modeler } from 'vuex-aggregate'
 import { wait } from '../../utils/promise'
 
 // ______________________________________________________
