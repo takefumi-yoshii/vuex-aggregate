@@ -1,29 +1,55 @@
 {
-  "name": "vuex-mutation-creator",
+  "name": "vuex-aggregate",
   "version": "1.0.0",
-  "description": "Inferred types for vuex mutations with creators.",
+  "description": "Inferred types for vuex",
+  "main": "dist/index.js",
+  "typings": "typings/index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc src/index.ts --outDir ./dist",
+    "test": "NODE_ENV=test jest",
+    "test:watch": "NODE_ENV=test jest --watch",
+    "prettier": "prettier \"src/**/*.ts\" \"typings/**/*.ts\" \"__tests__/**/*.ts\" --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takefumi-yoshii/vuex-aggregate.git"
+  },
   "author": "takefumi-yoshii",
   "license": "MIT",
-  "scripts": {
-    "start": "webpack-dev-server --mode=development"
+  "bugs": {
+    "url": "https://github.com/takefumi-yoshii/vuex-aggregate/issues"
   },
+  "homepage": "https://github.com/takefumi-yoshii/vuex-aggregate#readme",
   "dependencies": {
     "vue": "^2.5.16",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@types/node": "^10.0.2",
-    "@types/vue": "^2.0.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.1",
-    "ts-loader": "^4.2.0",
-    "ts-node": "^6.0.2",
-    "typescript": "^2.8.3",
-    "vue-loader": "^15.0.5",
-    "vue-template-compiler": "^2.5.16",
-    "webpack": "^4.6.0",
-    "webpack-cli": "^2.1.2",
-    "webpack-dev-server": "^3.1.3"
+    "@types/jest": "^23.3.0",
+    "@types/node": "^10.5.2",
+    "jest": "^23.4.1",
+    "prettier": "^1.13.7",
+    "ts-jest": "^23.0.1",
+    "ts-node": "^7.0.0",
+    "typescript": ">=2.8.0",
+    "typescript-eslint-parser": "^16.0.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "**/__tests__/*.(ts|tsx)"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
   }
 }

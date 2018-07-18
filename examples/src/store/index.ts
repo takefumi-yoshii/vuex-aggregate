@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import counter, { CounterState } from './modules/counter'
+import { CounterModule, CounterState } from './modules/counter'
 
 // ______________________________________________________
 //
@@ -9,7 +9,7 @@ import counter, { CounterState } from './modules/counter'
 export interface StoreState {
   counter: CounterState
 }
-export interface VuexBounds {
+export interface BoundsStore {
   $store: {
     state: StoreState
     commit: (type: string, payload?: any) => void
@@ -22,6 +22,6 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   modules: {
-    counter: counter({ name: 'COUNTER' })
+    counter: CounterModule({ name: 'COUNTER' })
   }
 })
