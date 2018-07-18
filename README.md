@@ -1,5 +1,6 @@
-# vuex-mutation-creator
-Inferred types for vuex mutations with creators.
+# vuex-aggregate
+Inferred types for Vuex mutations.
+Generated committers provide store commit proxy, and guard for payload schema type.
 
 ## installation
 
