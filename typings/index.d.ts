@@ -32,6 +32,14 @@ interface FromActionsReturn<A> {
   readonly dispatchTypes: Types<A>
   readonly dispatchers: Dispatchers<A>
 }
+declare function fromMutations<M extends KeyMap & Mutations<M>>(
+  mutations: M,
+  namespace: string
+): FromMutationsReturn<M>
+declare function fromActions<A extends KeyMap & Actions<A>>(
+  actions: A,
+  namespace: string
+): FromActionsReturn<A>
 
 type Injects<T> = { [P in keyof T]?: T[P] }
 type Modeler<T> = (injects?: Injects<T>) => T
@@ -45,6 +53,8 @@ export {
   Dispatchers,
   FromMutationsReturn,
   FromActionsReturn,
+  fromMutations,
+  fromActions,
   Injects,
   Modeler
 }
