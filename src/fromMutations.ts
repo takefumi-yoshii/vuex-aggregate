@@ -17,7 +17,7 @@ function fromMutations<M extends KeyMap & Mutations<M>>(
     process.env.NODE_ENV !== 'development'
   ) {
     throw new Error(
-      `vuex-FromMutationsReturn: conflict namespace -> ${namespace}`
+      `vuex-aggregate: conflict fromMutations namespace -> ${namespace}`
     )
   } else {
     namespaced[namespace] = namespace

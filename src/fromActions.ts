@@ -17,7 +17,7 @@ function fromActions<A extends KeyMap & Actions<A>>(
     process.env.NODE_ENV !== 'development'
   ) {
     throw new Error(
-      `vuex-FromMutationsReturn: conflict namespace -> ${namespace}`
+      `vuex-aggregate: conflict fromActions namespace -> ${namespace}`
     )
   } else {
     namespaced[namespace] = namespace
