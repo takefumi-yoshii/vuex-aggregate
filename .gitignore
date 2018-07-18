@@ -2,4 +2,3 @@
 .cache
 *.log
 node_modules
-app
