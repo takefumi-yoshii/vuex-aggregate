@@ -5,21 +5,43 @@ Inferred types helper module for Vuex.(Required TypeScript2.8 or higher)
 Generated committers provide `store.commit` proxy, and  
 Generated dispatchers provide `store.dispatch` proxy with inferred types.  
 
-## Try refactor mutations payload schema.
+## Try refactor mutation name.
 
 refactor payload schema @ `examples/src/store/modules/counter.ts`
 
 ```javascript
-setCount(state: CounterState, count: number): void
+increment(state: CounterState): void {
+  state.count++
+}
 ```
 
 ...to
 
 ```javascript
-setCount(state: CounterState, payload: { count: number }): void
+addCount(state: CounterState): void {
+  state.count++
+}
 ```
 
-## Try refactor actions payload schema.
+## Try refactor mutation payload schema.
+
+refactor payload schema @ `examples/src/store/modules/counter.ts`
+
+```javascript
+setName(state: CounterState, name: string): void {
+  state.name = name
+}
+```
+
+...to
+
+```javascript
+setName(state: CounterState, payload: { name: string }): void {
+  state.name = payload.name
+}
+```
+
+## Try refactor action payload schema.
 
 refactor payload schema @ `examples/src/store/modules/counter.ts`
 
