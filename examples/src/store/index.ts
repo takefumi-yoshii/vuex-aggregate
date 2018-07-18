@@ -10,10 +10,7 @@ export interface StoreState {
   counter: CounterState
 }
 export interface BoundsStore {
-  $store: {
-    state: StoreState
-    commit: (type: string, payload?: any) => void
-  }
+  $store: { state: StoreState }
 }
 
 // ______________________________________________________
