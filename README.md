@@ -1,11 +1,12 @@
 # vuex-aggregate
 [![Latest Version](https://img.shields.io/badge/npm-vuex_aggregate-C12127.svg)](https://www.npmjs.com/package/vuex-aggregate)
 
-Inferred types helper module for Vuex.(Required TypeScript2.8 or higher)  
-Generated committers provide `store.commit` proxy, and  
-Generated dispatchers provide `store.dispatch` proxy with inferred types.  
+Inferred types helper module for Vuex.(Required TypeScript2.8 or higher) 
+Generated committers provide `store.commit` proxy, and 
+Generated dispatchers provide `store.dispatch` proxy with inferred types. 
+Let's reconfirm the vulnerability of Flux pattern at the beginning.
 
-## Try refactor mutation name.
+### Try refactor mutation name.
 
 refactor payload schema @ `examples/src/store/modules/counter.ts`
 
@@ -14,8 +15,9 @@ increment(state: CounterState): void {
   state.count++
 }
 ```
-
-...to
+Let's change the above mutation as follows.  
+Did you find various errors?  
+You can see that even SFC is reacting.  
 
 ```javascript
 addCount(state: CounterState): void {
@@ -23,7 +25,7 @@ addCount(state: CounterState): void {
 }
 ```
 
-## Try refactor mutation payload schema.
+### Try refactor mutation payload schema.
 
 refactor payload schema @ `examples/src/store/modules/counter.ts`
 
@@ -32,8 +34,9 @@ setName(state: CounterState, name: string): void {
   state.name = name
 }
 ```
-
-...to
+Change the Payload type of the above mutation as follows.  
+Try convert it to another type ex:)number.  
+You can reconfirm the need for a Types.  
 
 ```javascript
 setName(state: CounterState, payload: { name: string }): void {
@@ -41,7 +44,7 @@ setName(state: CounterState, payload: { name: string }): void {
 }
 ```
 
-## Try refactor action payload schema.
+### Try refactor action payload schema.
 
 refactor payload schema @ `examples/src/store/modules/counter.ts`
 
@@ -51,12 +54,68 @@ async asyncIncrement(store: any, duration: number) {
   committers.increment(store)
 }
 ```
-
-...to
+Even if you do not need a payload, an error will occur if given payload.  
+According to specifications, actions expect to return Promise and inferred types return Promise.  
 
 ```javascript
 async asyncIncrement(store: any) {
   await wait()
   committers.increment(store)
 }
+```
+
+
+# Usage
+
+Wrap your mutations and actions with unique namespace by vuex-aggregate provided APIs.
+`fromMutations` is for mutations, `fromActions` is for actions.
+`namespace` must to be align modulename.
+
+```javascript
+import { fromMutations, fromActions } from 'vuex-aggregate'
+
+export const namespace = 'counter'
+
+// ______________________________________________________
+//
+// @ Mutations
+
+const mutations = {
+  increment(state: CounterState): void {
+    state.count++
+  }
+}
+export const { committers, commitTypes } = fromMutations(mutations, namespace)
+
+// ______________________________________________________
+//
+// @ Actions
+
+const actions = {
+  async asyncIncrement(store: any, duration: number) {
+    await wait(duration)
+    committers.increment(store)
+  }
+}
+export const { dispatchers, dispatchTypes } = fromActions(actions, namespace)
+
+```
+vuex-aggregate assumed to use shallow modules.
+Please specify `namespaced: true` at module.
+
+```javascript
+export const CounterModule = (injects?: Injects<CounterState>) => ({
+  namespaced: true, // Required
+  state: CounterModel(injects),
+  mutations,
+  actions
+})
+
+export const store = new Vuex.Store({
+  modules: {
+    // It is necessary to match the module name to a defined namespace such as `counter '.
+    counter: CounterModule({ name: 'COUNTER' })
+  }
+})
+
 ```

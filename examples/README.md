@@ -7,7 +7,7 @@ $ yarn start
 
 launched dev-server on http://localhost:1234/
 
-## Try refactor mutation name.
+### Try refactor mutation name.
 
 refactor payload schema @ `src/store/modules/counter.ts`
 
@@ -16,8 +16,9 @@ increment(state: CounterState): void {
   state.count++
 }
 ```
-
-...to
+Let's change the above mutation as follows.  
+Did you find various errors?  
+You can see that even SFC is reacting.  
 
 ```javascript
 addCount(state: CounterState): void {
@@ -25,7 +26,7 @@ addCount(state: CounterState): void {
 }
 ```
 
-## Try refactor mutation payload schema.
+### Try refactor mutation payload schema.
 
 refactor payload schema @ `src/store/modules/counter.ts`
 
@@ -34,8 +35,9 @@ setName(state: CounterState, name: string): void {
   state.name = name
 }
 ```
-
-...to
+Change the Payload type of the above mutation as follows.  
+Try convert it to another type ex:)number.  
+You can reconfirm the need for a Types.  
 
 ```javascript
 setName(state: CounterState, payload: { name: string }): void {
@@ -43,7 +45,7 @@ setName(state: CounterState, payload: { name: string }): void {
 }
 ```
 
-## Try refactor action payload schema.
+### Try refactor action payload schema.
 
 refactor payload schema @ `src/store/modules/counter.ts`
 
@@ -53,8 +55,8 @@ async asyncIncrement(store: any, duration: number) {
   committers.increment(store)
 }
 ```
-
-...to
+Even if you do not need a payload, an error will occur if given payload.  
+According to specifications, actions expect to return Promise and inferred types return Promise.  
 
 ```javascript
 async asyncIncrement(store: any) {
@@ -62,5 +64,3 @@ async asyncIncrement(store: any) {
   committers.increment(store)
 }
 ```
-
-Did you receive an error at SFC?
