@@ -1,5 +1,6 @@
 # vuex-aggregate
 [![Latest Version](https://img.shields.io/badge/npm-vuex_aggregate-C12127.svg)](https://www.npmjs.com/package/vuex-aggregate)
+[![CircleCI](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate.svg?style=svg)](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate)
 
 Inferred types helper module for Vuex.(Required TypeScript2.8 or higher) 
 Generated committers provide `store.commit` proxy, and 
