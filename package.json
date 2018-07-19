@@ -26,26 +26,25 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.0",
     "@types/node": "^10.5.2",
+    "babel-jest": "^23.4.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
     "jest": "^23.4.1",
     "prettier": "^1.13.7",
-    "ts-jest": "^23.0.1",
     "ts-node": "^7.0.0",
     "typescript": ">=2.8.0",
-    "typescript-eslint-parser": "^16.0.1"
+    "typescript-eslint-parser": "^16.0.1",
+    "vue-jest": "^2.6.0"
   },
   "jest": {
     "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
+      "js",
+      "vue"
     ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
-    },
     "testMatch": [
-      "**/__tests__/*.(ts|tsx)"
+      "**/__tests__/*.(js)"
     ]
   },
   "prettier": {
