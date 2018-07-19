@@ -85,7 +85,7 @@ const mutations = {
     state.count++
   }
 }
-export const { committers, commitTypes } = fromMutations(mutations, namespace)
+export const { committers, mutationTypes } = fromMutations(mutations, namespace)
 
 // ______________________________________________________
 //
