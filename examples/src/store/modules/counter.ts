@@ -47,7 +47,7 @@ const actions = {
   }
 }
 
-export const { dispatchers, dispatchTypes } = fromActions(actions, namespace)
+export const { dispatchers, actionTypes } = fromActions(actions, namespace)
 
 // ______________________________________________________
 //

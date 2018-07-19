@@ -26,7 +26,7 @@ interface FromMutationsReturn<M> {
   readonly committers: Committers<M>
 }
 interface FromActionsReturn<A> {
-  readonly dispatchTypes: Types<A>
+  readonly actionTypes: Types<A>
   readonly dispatchers: Dispatchers<A>
 }
 declare function fromMutations<M extends KeyMap & Mutations<M>>(

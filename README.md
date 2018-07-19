@@ -97,7 +97,7 @@ const actions = {
     committers.increment(store)
   }
 }
-export const { dispatchers, dispatchTypes } = fromActions(actions, namespace)
+export const { dispatchers, actionTypes } = fromActions(actions, namespace)
 
 ```
 vuex-aggregate assumed to use shallow modules.
