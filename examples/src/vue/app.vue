@@ -10,7 +10,6 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import { mapState } from 'vuex'
 import { BoundsStore } from '../store/index'
 import { committers, dispatchers } from '../store/modules/counter'
 
