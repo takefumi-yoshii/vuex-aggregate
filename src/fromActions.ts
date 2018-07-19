@@ -22,17 +22,17 @@ function fromActions<A extends KeyMap & Actions<A>>(
   } else {
     namespaced[namespace] = namespace
   }
-  const dispatchTypes: KeyMap = {}
+  const actionTypes: KeyMap = {}
   const dispatchers: KeyMap = {}
   Object.keys(actions).forEach(key => {
     const type = `${namespace}/${key}`
-    dispatchTypes[key] = type
+    actionTypes[key] = type
     dispatchers[key] = (store: any, payload?: any) => {
       store.dispatch(type, payload, { root: true })
     }
   })
   return {
-    dispatchTypes: dispatchTypes as Types<A>,
+    actionTypes: actionTypes as Types<A>,
     dispatchers: dispatchers as Dispatchers<A>
   }
 }

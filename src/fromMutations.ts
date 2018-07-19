@@ -22,17 +22,17 @@ function fromMutations<M extends KeyMap & Mutations<M>>(
   } else {
     namespaced[namespace] = namespace
   }
-  const commitTypes: KeyMap = {}
+  const mutationTypes: KeyMap = {}
   const committers: KeyMap = {}
   Object.keys(mutations).forEach(key => {
     const type = `${namespace}/${key}`
-    commitTypes[key] = type
+    mutationTypes[key] = type
     committers[key] = (store: any, payload?: any) => {
       store.commit(type, payload, { root: true })
     }
   })
   return {
-    commitTypes: commitTypes as Types<M>,
+    mutationTypes: mutationTypes as Types<M>,
     committers: committers as Committers<M>
   }
 }

@@ -34,7 +34,7 @@ const mutations = {
   }
 }
 
-export const { committers, commitTypes } = fromMutations(mutations, namespace)
+export const { committers, mutationTypes } = fromMutations(mutations, namespace)
 
 // ______________________________________________________
 //
@@ -47,7 +47,7 @@ const actions = {
   }
 }
 
-export const { dispatchers, dispatchTypes } = fromActions(actions, namespace)
+export const { dispatchers, actionTypes } = fromActions(actions, namespace)
 
 // ______________________________________________________
 //

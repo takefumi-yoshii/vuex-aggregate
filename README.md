@@ -85,7 +85,7 @@ const mutations = {
     state.count++
   }
 }
-export const { committers, commitTypes } = fromMutations(mutations, namespace)
+export const { committers, mutationTypes } = fromMutations(mutations, namespace)
 
 // ______________________________________________________
 //
@@ -97,7 +97,7 @@ const actions = {
     committers.increment(store)
   }
 }
-export const { dispatchers, dispatchTypes } = fromActions(actions, namespace)
+export const { dispatchers, actionTypes } = fromActions(actions, namespace)
 
 ```
 vuex-aggregate assumed to use shallow modules.
