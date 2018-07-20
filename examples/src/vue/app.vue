@@ -43,7 +43,7 @@ const methods: ThisType<BoundsStore> = {
   },
   toggleAutoIncrement (duration: number) {
     const flag = !this.$store.state.counter.isRunningAutoIncrement
-    dispatchers.startAutoIncrement(this.$store.dispatch, { duration, flag })
+    dispatchers.toggleAutoIncrement(this.$store.dispatch, { duration, flag })
   }
 }
 

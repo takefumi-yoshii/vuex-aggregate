@@ -50,7 +50,7 @@ const actions = {
     await wait(duration)
     committers.increment(commit)
   },
-  async startAutoIncrement(
+  async toggleAutoIncrement(
     { commit, state }: { commit: Function; state: CounterState },
     { duration, flag }: { duration: number; flag: boolean }
   ) {
