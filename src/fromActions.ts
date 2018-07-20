@@ -28,7 +28,7 @@ function fromActions<A extends KeyMap & Actions<A>>(
     const type = `${namespace}/${key}`
     actionTypes[key] = type
     dispatchers[key] = (store: any, payload?: any) => {
-      store.dispatch(type, payload, { root: true })
+      return store.dispatch(type, payload, { root: true })
     }
   })
   return {
