@@ -2,13 +2,13 @@ type KeyMap = { [K: string]: any }
 type A1<T> = T extends (a1: infer I, ...rest: any[]) => any ? I : never
 type A2<T> = T extends (a1: any, a2: infer I, ...rest: any[]) => any ? I : never
 type MT<T> = (state: A1<T>) => void
-type CM<T> = (store: any) => void
-type AC<T> = (store: any) => Promise<any>
-type DP<T> = (store: any) => Promise<any>
+type CM<T> = (commit: Function) => void
+type AC<T> = (context: any) => Promise<any>
+type DP<T> = (diapatch: Function) => Promise<any>
 type MTPL<T> = (state: A1<T>, payload: A2<T>) => void
-type CMPL<T> = (store: any, payload: A2<T>) => void
-type ACPL<T> = (store: any, payload: A2<T>) => Promise<any>
-type DPPL<T> = (store: any, payload: A2<T>) => Promise<any>
+type CMPL<T> = (commit: Function, payload: A2<T>) => void
+type ACPL<T> = (context: any, payload: A2<T>) => Promise<any>
+type DPPL<T> = (diapatch: Function, payload: A2<T>) => Promise<any>
 type Mutation<T> = MT<T> | MTPL<T>
 type Action<T> = AC<T> | ACPL<T>
 type Committer<T> = T extends MT<T> ? CM<T> : CMPL<T>

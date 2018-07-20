@@ -32,8 +32,8 @@ const mutations = {
 const { committers, mutationTypes } = fromMutations(mutations, namespace)
 
 const actions = {
-  async asyncIncrement(store, duration) {
-    committers.increment(store)
+  async asyncIncrement({ commit }, duration) {
+    committers.increment(commit)
     return 'asyncIncrement called'
   }
 }
@@ -79,7 +79,7 @@ describe('vuex-aggregate', () => {
     const store = createStore()
     test('count will be increment', () => {
       expect(store.state.counter.count).toEqual(0)
-      committers.increment(store)
+      committers.increment(store.commit)
       expect(store.state.counter.count).toEqual(1)
     })
   })
@@ -87,7 +87,7 @@ describe('vuex-aggregate', () => {
   describe('committer return void', () => {
     const store = createStore()
     test('commiter will return undefined', () => {
-      const commitReturn = committers.increment(store)
+      const commitReturn = committers.increment(store.commit)
       expect(commitReturn).toEqual(undefined)
     })
   })
@@ -96,7 +96,7 @@ describe('vuex-aggregate', () => {
     const store = createStore()
     test('count will be increment', () => {
       expect(store.state.counter.count).toEqual(0)
-      dispatchers.asyncIncrement(store)
+      dispatchers.asyncIncrement(store.dispatch)
       expect(store.state.counter.count).toEqual(1)
     })
   })
@@ -104,7 +104,7 @@ describe('vuex-aggregate', () => {
   describe('dispatcher return Promise', () => {
     const store = createStore()
     test('promise resolve then return value', async () => {
-      const dispatchReturn = await dispatchers.asyncIncrement(store)
+      const dispatchReturn = await dispatchers.asyncIncrement(store.dispatch)
       expect(dispatchReturn).toEqual('asyncIncrement called')
     })
   })
