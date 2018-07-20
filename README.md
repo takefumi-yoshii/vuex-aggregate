@@ -93,9 +93,9 @@ export const { committers, mutationTypes } = fromMutations(mutations, namespace)
 // @ Actions
 
 const actions = {
-  async asyncIncrement(store: any, duration: number) {
+  async asyncIncrement({ commit }: { commit: Function }, duration: number) {
     await wait(duration)
-    committers.increment(store)
+    committers.increment(commit)
   }
 }
 export const { dispatchers, actionTypes } = fromActions(actions, namespace)
