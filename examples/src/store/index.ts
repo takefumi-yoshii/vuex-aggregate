@@ -9,8 +9,13 @@ import { CounterModule, CounterState } from './modules/counter'
 export interface StoreState {
   counter: CounterState
 }
+export interface Store {
+  state: StoreState
+  commit: Function
+  dispatch: Function
+}
 export interface BoundsStore {
-  $store: { state: StoreState }
+  $store: Store
 }
 
 // ______________________________________________________
