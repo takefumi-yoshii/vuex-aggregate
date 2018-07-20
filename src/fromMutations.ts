@@ -27,8 +27,8 @@ function fromMutations<M extends KeyMap & Mutations<M>>(
   Object.keys(mutations).forEach(key => {
     const type = `${namespace}/${key}`
     mutationTypes[key] = type
-    committers[key] = (store: any, payload?: any) => {
-      return store.commit(type, payload, { root: true })
+    committers[key] = (commit: Function, payload?: any) => {
+      return commit(type, payload, { root: true })
     }
   })
   return {

@@ -1,10 +1,16 @@
 <template>
   <div>
     <p>count = {{count}}</p>
+    <p>isRunningAutoIncrement = {{autoIncrementLabel}}</p>
     <p>name = {{name}}</p>
-    <button @click="increment()">+1</button>
-    <button @click="asyncIncrement(1000)">asyncIncrement</button>
-    <input @change="e => setName(e.target.value)" />
+    <div>
+      <button @click="increment()">+1</button>
+      <button @click="asyncIncrement(1000)">asyncIncrement</button>
+      <button @click="toggleAutoIncrement(100)">toggleAutoIncrement</button>
+    </div>
+    <div>
+      <input @change="e => setName(e.target.value)" />
+    </div>
   </div>
 </template>
 
@@ -19,17 +25,25 @@ const computed: ThisType<BoundsStore> = {
   },
   name () {
     return this.$store.state.counter.name
+  },
+  autoIncrementLabel() {
+    const flag = this.$store.state.counter.isRunningAutoIncrement
+    return flag ? 'true' : 'false'
   }
 }
 const methods: ThisType<BoundsStore> = {
   increment () {
-    committers.increment(this.$store)
+    committers.increment(this.$store.commit)
   },
   setName (value: string) {
-    committers.setName(this.$store, value)
+    committers.setName(this.$store.commit, value)
   },
   asyncIncrement (duration: number) {
-    dispatchers.asyncIncrement(this.$store, duration)
+    dispatchers.asyncIncrement(this.$store.dispatch, duration)
+  },
+  toggleAutoIncrement (duration: number) {
+    const flag = !this.$store.state.counter.isRunningAutoIncrement
+    dispatchers.startAutoIncrement(this.$store.dispatch, { duration, flag })
   }
 }
 
