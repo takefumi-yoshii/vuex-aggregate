@@ -1,4 +1,4 @@
-# <img src='./logo.svg' width='267' height='60' alt='vuex-aggregate' />
+# <img src='https://user-images.githubusercontent.com/22139818/43042404-e9fcf9ea-8db7-11e8-82ea-832cea6db527.png' width='267' height='60' alt='vuex-aggregate' />
 
 [![Latest Version](https://img.shields.io/badge/npm-vuex_aggregate-C12127.svg)](https://www.npmjs.com/package/vuex-aggregate)
 [![CircleCI](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate.svg?style=svg)](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate)
