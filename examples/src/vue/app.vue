@@ -25,9 +25,7 @@ import { BoundsStore } from '../store/index'
 import * as Counter from '../store/modules/counter'
 
 const computed: ThisType<BoundsStore> = {
-  ...Counter.proxyMapState(mapState, [
-    'count'
-  ]),
+  ...Counter.proxyMapState(mapState, ['count']),
   ...Counter.proxyMapState(mapState, {
     double: state => state.count * 2
   }),
