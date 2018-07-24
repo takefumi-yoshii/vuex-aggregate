@@ -1,7 +1,9 @@
 <template>
   <div>
-    <p>count = {{countLabel}}</p>
+    <p>count = {{count}}</p>
+    <p>double = {{double}}</p>
     <p>expo2 = {{expo2}}</p>
+    <p>countLabel = {{countLabel}}</p>
     <p>isRunningAutoIncrement = {{autoIncrementLabel}}</p>
     <p>name = {{nameLabel}}</p>
     <div>
@@ -18,11 +20,17 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import { BoundsStore } from '../store/index'
 import * as Counter from '../store/modules/counter'
 
 const computed: ThisType<BoundsStore> = {
+  ...Counter.proxyMapState(mapState, [
+    'count'
+  ]),
+  ...Counter.proxyMapState(mapState, {
+    double: state => state.count * 2
+  }),
   ...Counter.proxyMapGetters(mapGetters, ['nameLabel', 'autoIncrementLabel']),
   countLabel() {
     return Counter.proxyGetters.countLabel(this.$store.getters, 'pt')
