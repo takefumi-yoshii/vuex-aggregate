@@ -1,9 +1,9 @@
 <template>
   <div>
-    <p>count = {{count}}</p>
+    <p>count = {{countLabel}}</p>
     <p>expo2 = {{expo2}}</p>
     <p>isRunningAutoIncrement = {{autoIncrementLabel}}</p>
-    <p>name = {{name}}</p>
+    <p>name = {{nameLabel}}</p>
     <div>
       <button @click="increment()">+1</button>
       <button @click="asyncIncrement(1000)">asyncIncrement</button>
@@ -21,11 +21,11 @@ import { BoundsStore } from '../store/index'
 import { committers, dispatchers, proxyGetters } from '../store/modules/counter'
 
 const computed: ThisType<BoundsStore> = {
-  count () {
-    return this.$store.state.counter.count
+  countLabel () {
+    return proxyGetters.countLabel(this.$store.getters, 'pt')
   },
-  name () {
-    return this.$store.state.counter.name
+  nameLabel () {
+    return proxyGetters.nameLabel(this.$store.getters)
   },
   expo2 () {
     return proxyGetters.expo(this.$store.getters, 2)
@@ -34,6 +34,7 @@ const computed: ThisType<BoundsStore> = {
     return proxyGetters.autoIncrementLabel(this.$store.getters)
   }
 }
+
 const methods: ThisType<BoundsStore> = {
   increment () {
     committers.increment(this.$store.commit)

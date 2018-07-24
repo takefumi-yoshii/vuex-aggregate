@@ -1,4 +1,10 @@
-import { fromMutations, fromActions, fromGetters, Injects, Modeler } from '../../../../src'
+import {
+  fromMutations,
+  fromActions,
+  fromGetters,
+  Injects,
+  Modeler
+} from '../../../../src'
 import { wait } from '../../utils/promise'
 
 // ______________________________________________________
@@ -15,7 +21,7 @@ export interface CounterState {
 
 const CounterModel: Modeler<CounterState> = injects => ({
   count: 0,
-  name: 'my name',
+  name: 'unknown',
   isRunningAutoIncrement: false,
   ...injects
 })
@@ -25,14 +31,22 @@ const CounterModel: Modeler<CounterState> = injects => ({
 // @ Getters
 
 const getters = {
-  autoIncrementLabel(state: CounterState): string {
-    const flag = state.isRunningAutoIncrement
-    return flag ? 'true' : 'false'
+  countLabel(state: CounterState): (unit: string) => string {
+    return (unit: string) => {
+      return `${state.count} ${unit}`
+    }
   },
   expo(state: CounterState): (amount: number) => number {
     return (amount: number) => {
       return state.count ** amount
     }
+  },
+  autoIncrementLabel(state: CounterState): string {
+    const flag = state.isRunningAutoIncrement
+    return flag ? 'true' : 'false'
+  },
+  nameLabel(state: CounterState): string {
+    return `my name is ${state.name}`
   }
 }
 
