@@ -75,6 +75,7 @@ Wrap your mutations and actions with unique namespace by vuex-aggregate provided
 
 ```javascript
 import {
+  fromState,
   fromMutations,
   fromActions,
   fromGetters,
@@ -87,6 +88,8 @@ import { wait } from '../../utils/promise'
 //
 // @ Model
 
+const namespace = 'counter'
+
 interface State {
   count: number
   name: string
@@ -98,7 +101,7 @@ const Model: Modeler<State> = injects => ({
   isRunningAutoIncrement: false,
   ...injects
 })
-const namespace = 'counter'
+const { proxyMapState } = fromState(Model(), namespace)
 
 // ______________________________________________________
 //
