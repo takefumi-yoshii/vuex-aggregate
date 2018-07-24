@@ -1,10 +1,9 @@
+import { Types, KeyMap } from '../typings/utils.d'
 import {
-  KeyMap,
   Actions,
-  Types,
   Dispatchers,
   FromActionsReturn
-} from '../typings/index.d'
+} from '../typings/fromActions.d'
 
 const namespaced: KeyMap = {}
 
