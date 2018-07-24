@@ -5412,9 +5412,9 @@ vue@*, vue@^2.5.16:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
-vuex-aggregate@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/vuex-aggregate/-/vuex-aggregate-2.1.0.tgz#50765516a5ccb64f519bf54acebedbdd09117b93"
+vuex-aggregate@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/vuex-aggregate/-/vuex-aggregate-2.2.0.tgz#c59541c7dbeaec8a1d1a25835e1f6b915d95898d"
   dependencies:
     vue "^2.5.16"
     vuex "^3.0.1"
