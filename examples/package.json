@@ -11,7 +11,7 @@
   "dependencies": {
     "vue": "^2.5.16",
     "vuex": "^3.0.1",
-    "vuex-aggregate": "^2.2.0"
+    "vuex-aggregate": "^2.3.0"
   },
   "devDependencies": {
     "@types/node": "^10.0.2",

@@ -5,7 +5,7 @@ import {
   fromGetters,
   Injects,
   Modeler
-} from '../../../../src'
+} from 'vuex-aggregate'
 import { wait } from '../../utils/promise'
 
 // ______________________________________________________
