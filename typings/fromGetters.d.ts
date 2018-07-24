@@ -1,4 +1,4 @@
-import { KeyMap, RA1, R, RR, Types } from './utils.d'
+import { KeyMap, RA1, R, RR, Types, MapHelperOption } from './utils.d'
 
 // ______________________________________________________
 //
@@ -15,8 +15,14 @@ type PGT<T> = (getters: any) => R<T>
 type PGTR<T> = (getters: any, args: RA1<T>) => RR<T>
 type ProxyGetter<T> = T extends GTR<T> ? PGTR<T> : PGT<T>
 type ProxyGetters<T> = { readonly [K in keyof T]: ProxyGetter<T[K]> }
+type ProxyMapGetters<T> = (
+  mapGetters: Function,
+  mapHelperOption: MapHelperOption<T>
+) => any
+
 interface FromGettersReturn<G> {
   readonly proxyGetters: ProxyGetters<G>
+  readonly proxyMapGetters: ProxyMapGetters<G>
 }
 
 // DECL
@@ -29,4 +35,10 @@ declare function fromGetters<T extends KeyMap & Getters<T>>(
 //
 // @ exports
 
-export { Getters, ProxyGetters, FromGettersReturn, fromGetters }
+export {
+  Getters,
+  ProxyGetters,
+  ProxyMapGetters,
+  FromGettersReturn,
+  fromGetters
+}
