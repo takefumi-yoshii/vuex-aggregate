@@ -4,16 +4,16 @@ import {
   fromGetters,
   Injects,
   Modeler
-} from 'vuex-aggregate'
+} from '../../../../src'
 import { wait } from '../../utils/promise'
 
 // ______________________________________________________
 //
 // @ Model
 
-export const namespace = 'counter'
+const namespace = 'counter'
 
-export interface CounterState {
+interface CounterState {
   count: number
   name: string
   isRunningAutoIncrement: boolean
@@ -49,8 +49,7 @@ const getters = {
     return `my name is ${state.name}`
   }
 }
-
-export const { proxyGetters } = fromGetters(getters, namespace)
+const { proxyGetters, proxyMapGetters } = fromGetters(getters, namespace)
 
 // ______________________________________________________
 //
@@ -59,6 +58,9 @@ export const { proxyGetters } = fromGetters(getters, namespace)
 const mutations = {
   increment(state: CounterState): void {
     state.count++
+  },
+  decrement(state: CounterState): void {
+    state.count--
   },
   setCount(state: CounterState, count: number): void {
     state.count = count
@@ -70,8 +72,10 @@ const mutations = {
     state.isRunningAutoIncrement = flag
   }
 }
-
-export const { committers, mutationTypes } = fromMutations(mutations, namespace)
+const { committers, mutationTypes, proxyMapMutations } = fromMutations(
+  mutations,
+  namespace
+)
 
 // ______________________________________________________
 //
@@ -94,17 +98,32 @@ const actions = {
     }
   }
 }
-
-export const { dispatchers, actionTypes } = fromActions(actions, namespace)
+const { dispatchers, actionTypes, proxyMapActions } = fromActions(
+  actions,
+  namespace
+)
 
 // ______________________________________________________
 //
 // @ ModuleFactory
 
-export const CounterModule = (injects?: Injects<CounterState>) => ({
+const CounterModule = (injects?: Injects<CounterState>) => ({
   namespaced: true, // Required
   state: CounterModel(injects),
   getters,
   mutations,
   actions
 })
+
+export {
+  CounterState,
+  CounterModule,
+  mutationTypes,
+  actionTypes,
+  committers,
+  dispatchers,
+  proxyGetters,
+  proxyMapGetters,
+  proxyMapMutations,
+  proxyMapActions
+}

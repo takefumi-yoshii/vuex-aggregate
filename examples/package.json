@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode=development",
-    "prettier": "prettier \"src/**/*.ts\" \"types/**/*.ts\" --write"
+    "prettier": "prettier \"src/**/*.ts\" \"src/**/*.vue\" \"types/**/*.ts\" --write"
   },
   "dependencies": {
     "vue": "^2.5.16",
