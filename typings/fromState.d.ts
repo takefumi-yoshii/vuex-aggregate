@@ -7,10 +7,7 @@ type MapStateHelperOption<T> =
   | Array<keyof T>
   | { [k: string]: keyof T | StateGetter<T> }
 
-type ProxyMapState<T> = (
-  mapState: Function,
-  mapStateHelperOption: MapStateHelperOption<T>
-) => any
+type ProxyMapState<T> = (mapStateHelperOption: MapStateHelperOption<T>) => any
 
 interface FromStateReturn<T> {
   readonly proxyMapState: ProxyMapState<T>

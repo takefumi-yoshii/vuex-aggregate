@@ -1,3 +1,4 @@
+import { mapState } from 'vuex'
 import { KeyMap } from '../typings/utils.d'
 import {
   FromStateReturn,
@@ -18,11 +19,11 @@ function fromState<T>(state: T, namespace: string): FromStateReturn<T> {
   } else {
     namespaced[namespace] = namespace
   }
-  function proxyMapState<H extends Function, O extends MapStateHelperOption<T>>(
-    mapHelper: H,
+  function proxyMapState<O extends MapStateHelperOption<T>>(
     mapHelperOption: O
   ) {
-    return mapHelper(namespace, mapHelperOption)
+    const mapper = mapState as any
+    return mapper(namespace, mapHelperOption)
   }
   return {
     proxyMapState: proxyMapState as ProxyMapState<T>

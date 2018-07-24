@@ -1,3 +1,4 @@
+import { mapActions } from 'vuex'
 import { Types, MapHelperOption, KeyMap } from '../typings/utils.d'
 import {
   Actions,
@@ -31,11 +32,9 @@ function fromActions<T extends KeyMap & Actions<T>>(
       return dispatch(type, payload, { root: true })
     }
   })
-  function proxyMapActions<H extends Function, O extends MapHelperOption<T>>(
-    mapHelper: H,
-    mapHelperOption: O
-  ) {
-    return mapHelper(namespace, mapHelperOption)
+  function proxyMapActions<O extends MapHelperOption<T>>(mapHelperOption: O) {
+    const mapper = mapActions as any
+    return mapper(namespace, mapHelperOption)
   }
   return {
     actionTypes: actionTypes as Types<T>,
