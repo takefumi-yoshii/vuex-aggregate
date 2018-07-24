@@ -4,8 +4,8 @@
 [![CircleCI](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate.svg?style=svg)](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate)
 
 Inferred types helper module for Vuex.(Required TypeScript2.8 or higher) 
-Generated inferCommit provide `store.commit` proxy, and 
-Generated inferDispatch provide `store.dispatch` proxy with inferred types. 
+Generated inferCommits provide `store.commit` proxy, and 
+Generated inferDispatches provide `store.dispatch` proxy with inferred types. 
 Let's reconfirm the vulnerability of Flux pattern at the beginning.
 
 ### Try refactor mutation name.
@@ -149,7 +149,7 @@ const mutations = {
     state.isRunningAutoIncrement = flag
   }
 }
-const { inferCommit, mutationTypes, inferMapMutations } = fromMutations(
+const { inferCommits, mutationTypes, inferMapMutations } = fromMutations(
   mutations,
   namespace
 )
@@ -161,21 +161,21 @@ const { inferCommit, mutationTypes, inferMapMutations } = fromMutations(
 const actions = {
   async asyncIncrement({ commit }: { commit: Function }, duration: number) {
     await wait(duration)
-    inferCommit.increment(commit)
+    inferCommits.increment(commit)
   },
   async toggleAutoIncrement(
     { commit, state }: { commit: Function; state: State },
     { duration, flag }: { duration: number; flag: boolean }
   ) {
-    inferCommit.setRunningAutoIncrement(commit, flag)
+    inferCommits.setRunningAutoIncrement(commit, flag)
     while (true) {
       if (!state.isRunningAutoIncrement) break
       await wait(duration)
-      inferCommit.increment(commit)
+      inferCommits.increment(commit)
     }
   }
 }
-const { inferDispatch, actionTypes, inferMapActions } = fromActions(
+const { inferDispatches, actionTypes, inferMapActions } = fromActions(
   actions,
   namespace
 )

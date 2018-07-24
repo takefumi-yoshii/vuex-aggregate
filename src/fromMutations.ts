@@ -2,7 +2,7 @@ import { mapMutations } from 'vuex'
 import { Types, MapHelperOption, KeyMap } from '../typings/utils.d'
 import {
   Mutations,
-  InferCommit,
+  InferCommits,
   InferMapMutations,
   FromMutationsReturn
 } from '../typings/fromMutations.d'
@@ -24,11 +24,11 @@ function fromMutations<T extends KeyMap & Mutations<T>>(
     namespaced[namespace] = namespace
   }
   const mutationTypes: KeyMap = {}
-  const inferCommit: KeyMap = {}
+  const inferCommits: KeyMap = {}
   Object.keys(mutations).forEach(key => {
     const type = `${namespace}/${key}`
     mutationTypes[key] = type
-    inferCommit[key] = (commit: Function, payload?: any) => {
+    inferCommits[key] = (commit: Function, payload?: any) => {
       return commit(type, payload, { root: true })
     }
   })
@@ -38,7 +38,7 @@ function fromMutations<T extends KeyMap & Mutations<T>>(
   }
   return {
     mutationTypes: mutationTypes as Types<T>,
-    inferCommit: inferCommit as InferCommit<T>,
+    inferCommits: inferCommits as InferCommits<T>,
     inferMapMutations: inferMapMutations as InferMapMutations<T>
   }
 }

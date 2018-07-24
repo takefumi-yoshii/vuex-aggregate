@@ -73,7 +73,7 @@ const mutations = {
     state.isRunningAutoIncrement = flag
   }
 }
-const { mutationTypes, inferCommit, inferMapMutations } = fromMutations(
+const { mutationTypes, inferCommits, inferMapMutations } = fromMutations(
   mutations,
   namespace
 )
@@ -85,21 +85,21 @@ const { mutationTypes, inferCommit, inferMapMutations } = fromMutations(
 const actions = {
   async asyncIncrement({ commit }: { commit: Function }, duration: number) {
     await wait(duration)
-    inferCommit.increment(commit)
+    inferCommits.increment(commit)
   },
   async toggleAutoIncrement(
     { commit, state }: { commit: Function; state: State },
     { duration, flag }: { duration: number; flag: boolean }
   ) {
-    inferCommit.setRunningAutoIncrement(commit, flag)
+    inferCommits.setRunningAutoIncrement(commit, flag)
     while (true) {
       if (!state.isRunningAutoIncrement) break
       await wait(duration)
-      inferCommit.increment(commit)
+      inferCommits.increment(commit)
     }
   }
 }
-const { actionTypes, inferDispatch, inferMapActions } = fromActions(
+const { actionTypes, inferDispatches, inferMapActions } = fromActions(
   actions,
   namespace
 )
@@ -121,8 +121,8 @@ export {
   namespace,
   mutationTypes,
   actionTypes,
-  inferCommit,
-  inferDispatch,
+  inferCommits,
+  inferDispatches,
   inferMapState,
   inferGetters,
   inferMapGetters,

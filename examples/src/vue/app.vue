@@ -41,11 +41,11 @@ const methods: ThisType<BoundsStore> = {
   ...Counter.inferMapMutations(['increment', 'decrement']),
   ...Counter.inferMapActions(['asyncIncrement']),
   setName(value: string) {
-    Counter.inferCommit.setName(this.$store.commit, value)
+    Counter.inferCommits.setName(this.$store.commit, value)
   },
   toggleAutoIncrement(duration: number) {
     const flag = !this.$store.state.counter.isRunningAutoIncrement
-    Counter.inferDispatch.toggleAutoIncrement(this.$store.dispatch, {
+    Counter.inferDispatches.toggleAutoIncrement(this.$store.dispatch, {
       duration,
       flag
     })

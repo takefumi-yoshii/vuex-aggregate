@@ -2,7 +2,7 @@ import { mapActions } from 'vuex'
 import { Types, MapHelperOption, KeyMap } from '../typings/utils.d'
 import {
   Actions,
-  InferDispatch,
+  InferDispatches,
   InferMapActions,
   FromActionsReturn
 } from '../typings/fromActions.d'
@@ -24,11 +24,11 @@ function fromActions<T extends KeyMap & Actions<T>>(
     namespaced[namespace] = namespace
   }
   const actionTypes: KeyMap = {}
-  const inferDispatch: KeyMap = {}
+  const inferDispatches: KeyMap = {}
   Object.keys(actions).forEach(key => {
     const type = `${namespace}/${key}`
     actionTypes[key] = type
-    inferDispatch[key] = (dispatch: Function, payload?: any) => {
+    inferDispatches[key] = (dispatch: Function, payload?: any) => {
       return dispatch(type, payload, { root: true })
     }
   })
@@ -38,7 +38,7 @@ function fromActions<T extends KeyMap & Actions<T>>(
   }
   return {
     actionTypes: actionTypes as Types<T>,
-    inferDispatch: inferDispatch as InferDispatch<T>,
+    inferDispatches: inferDispatches as InferDispatches<T>,
     inferMapActions: inferMapActions as InferMapActions<T>
   }
 }
