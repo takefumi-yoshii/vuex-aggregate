@@ -1,16 +1,17 @@
-import { Types, KeyMap } from '../typings/utils.d'
+import { Types, MapHelperOption, KeyMap } from '../typings/utils.d'
 import {
   Actions,
   Dispatchers,
+  ProxyMapActions,
   FromActionsReturn
 } from '../typings/fromActions.d'
 
 const namespaced: KeyMap = {}
 
-function fromActions<A extends KeyMap & Actions<A>>(
-  actions: A,
+function fromActions<T extends KeyMap & Actions<T>>(
+  actions: T,
   namespace: string
-): FromActionsReturn<A> {
+): FromActionsReturn<T> {
   if (
     namespaced[namespace] !== undefined &&
     process.env.NODE_ENV !== 'development'
@@ -30,9 +31,16 @@ function fromActions<A extends KeyMap & Actions<A>>(
       return dispatch(type, payload, { root: true })
     }
   })
+  function proxyMapActions<H extends Function, O extends MapHelperOption<T>>(
+    mapHelper: H,
+    mapHelperOption: O
+  ) {
+    return mapHelper(namespace, mapHelperOption)
+  }
   return {
-    actionTypes: actionTypes as Types<A>,
-    dispatchers: dispatchers as Dispatchers<A>
+    actionTypes: actionTypes as Types<T>,
+    dispatchers: dispatchers as Dispatchers<T>,
+    proxyMapActions: proxyMapActions as ProxyMapActions<T>
   }
 }
 

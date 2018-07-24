@@ -1,16 +1,17 @@
-import { Types, KeyMap } from '../typings/utils.d'
+import { Types, MapHelperOption, KeyMap } from '../typings/utils.d'
 import {
   Mutations,
   Committers,
+  ProxyMapMutations,
   FromMutationsReturn
 } from '../typings/fromMutations.d'
 
 const namespaced: KeyMap = {}
 
-function fromMutations<M extends KeyMap & Mutations<M>>(
-  mutations: M,
+function fromMutations<T extends KeyMap & Mutations<T>>(
+  mutations: T,
   namespace: string
-): FromMutationsReturn<M> {
+): FromMutationsReturn<T> {
   if (
     namespaced[namespace] !== undefined &&
     process.env.NODE_ENV !== 'development'
@@ -30,9 +31,16 @@ function fromMutations<M extends KeyMap & Mutations<M>>(
       return commit(type, payload, { root: true })
     }
   })
+  function proxyMapMutations<H extends Function, O extends MapHelperOption<T>>(
+    mapHelper: H,
+    mapHelperOption: O
+  ) {
+    return mapHelper(namespace, mapHelperOption)
+  }
   return {
-    mutationTypes: mutationTypes as Types<M>,
-    committers: committers as Committers<M>
+    mutationTypes: mutationTypes as Types<T>,
+    committers: committers as Committers<T>,
+    proxyMapMutations: proxyMapMutations as ProxyMapMutations<T>
   }
 }
 

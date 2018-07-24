@@ -1,16 +1,17 @@
-import { KeyMap } from '../typings/utils.d'
+import { KeyMap, MapHelperOption } from '../typings/utils.d'
 import {
   Getters,
   ProxyGetters,
+  ProxyMapGetters,
   FromGettersReturn
 } from '../typings/fromGetters.d'
 
 const namespaced: KeyMap = {}
 
-function fromGetters<G extends KeyMap & Getters<G>>(
-  getters: G,
+function fromGetters<T extends KeyMap & Getters<T>>(
+  getters: T,
   namespace: string
-): FromGettersReturn<G> {
+): FromGettersReturn<T> {
   if (
     namespaced[namespace] !== undefined &&
     process.env.NODE_ENV !== 'development'
@@ -29,8 +30,15 @@ function fromGetters<G extends KeyMap & Getters<G>>(
       return state[getterKey](args)
     }
   })
+  function proxyMapGetters<H extends Function, O extends MapHelperOption<T>>(
+    mapHelper: H,
+    mapHelperOption: O
+  ) {
+    return mapHelper(namespace, mapHelperOption)
+  }
   return {
-    proxyGetters: proxyGetters as ProxyGetters<G>
+    proxyGetters: proxyGetters as ProxyGetters<T>,
+    proxyMapGetters: proxyMapGetters as ProxyMapGetters<T>
   }
 }
 
