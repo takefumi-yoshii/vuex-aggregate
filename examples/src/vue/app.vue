@@ -1,8 +1,9 @@
 <template>
   <div>
-    <p>count = {{count}}</p>
+    <p>count = {{countLabel}}</p>
+    <p>expo2 = {{expo2}}</p>
     <p>isRunningAutoIncrement = {{autoIncrementLabel}}</p>
-    <p>name = {{name}}</p>
+    <p>name = {{nameLabel}}</p>
     <div>
       <button @click="increment()">+1</button>
       <button @click="asyncIncrement(1000)">asyncIncrement</button>
@@ -17,20 +18,23 @@
 <script lang='ts'>
 import Vue from 'vue'
 import { BoundsStore } from '../store/index'
-import { committers, dispatchers } from '../store/modules/counter'
+import { committers, dispatchers, proxyGetters } from '../store/modules/counter'
 
 const computed: ThisType<BoundsStore> = {
-  count () {
-    return this.$store.state.counter.count
+  countLabel () {
+    return proxyGetters.countLabel(this.$store.getters, 'pt')
   },
-  name () {
-    return this.$store.state.counter.name
+  nameLabel () {
+    return proxyGetters.nameLabel(this.$store.getters)
+  },
+  expo2 () {
+    return proxyGetters.expo(this.$store.getters, 2)
   },
   autoIncrementLabel() {
-    const flag = this.$store.state.counter.isRunningAutoIncrement
-    return flag ? 'true' : 'false'
+    return proxyGetters.autoIncrementLabel(this.$store.getters)
   }
 }
+
 const methods: ThisType<BoundsStore> = {
   increment () {
     committers.increment(this.$store.commit)
