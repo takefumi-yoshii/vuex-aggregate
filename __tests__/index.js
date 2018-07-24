@@ -29,15 +29,15 @@ const mutations = {
     state.name = name
   }
 }
-const { committers, mutationTypes } = fromMutations(mutations, namespace)
+const { inferCommit, mutationTypes } = fromMutations(mutations, namespace)
 
 const actions = {
   async asyncIncrement({ commit }, duration) {
-    committers.increment(commit)
+    inferCommit.increment(commit)
     return 'asyncIncrement called'
   }
 }
-const { dispatchers, actionTypes } = fromActions(actions, namespace)
+const { inferDispatch, actionTypes } = fromActions(actions, namespace)
 
 const CounterModule = injects => ({
   namespaced: true,
@@ -67,11 +67,11 @@ describe('vuex-aggregate', () => {
     test('action types has namespaced value', () => {
       expect(actionTypes.asyncIncrement).toEqual(`${namespace}/asyncIncrement`)
     })
-    test('committers has function', () => {
-      expect(typeof committers.increment === 'function').toBe(true)
+    test('inferCommit has function', () => {
+      expect(typeof inferCommit.increment === 'function').toBe(true)
     })
-    test('dispatchers has function', () => {
-      expect(typeof dispatchers.asyncIncrement === 'function').toBe(true)
+    test('inferDispatch has function', () => {
+      expect(typeof inferDispatch.asyncIncrement === 'function').toBe(true)
     })
   })
 
@@ -79,7 +79,7 @@ describe('vuex-aggregate', () => {
     const store = createStore()
     test('count will be increment', () => {
       expect(store.state.counter.count).toEqual(0)
-      committers.increment(store.commit)
+      inferCommit.increment(store.commit)
       expect(store.state.counter.count).toEqual(1)
     })
   })
@@ -87,7 +87,7 @@ describe('vuex-aggregate', () => {
   describe('committer return void', () => {
     const store = createStore()
     test('commiter will return undefined', () => {
-      const commitReturn = committers.increment(store.commit)
+      const commitReturn = inferCommit.increment(store.commit)
       expect(commitReturn).toEqual(undefined)
     })
   })
@@ -96,7 +96,7 @@ describe('vuex-aggregate', () => {
     const store = createStore()
     test('count will be increment', () => {
       expect(store.state.counter.count).toEqual(0)
-      dispatchers.asyncIncrement(store.dispatch)
+      inferDispatch.asyncIncrement(store.dispatch)
       expect(store.state.counter.count).toEqual(1)
     })
   })
@@ -104,7 +104,7 @@ describe('vuex-aggregate', () => {
   describe('dispatcher return Promise', () => {
     const store = createStore()
     test('promise resolve then return value', async () => {
-      const dispatchReturn = await dispatchers.asyncIncrement(store.dispatch)
+      const dispatchReturn = await inferDispatch.asyncIncrement(store.dispatch)
       expect(dispatchReturn).toEqual('asyncIncrement called')
     })
   })

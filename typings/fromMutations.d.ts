@@ -14,12 +14,12 @@ type Mutations<T> = { [K in keyof T]: Mutation<T[K]> }
 type CM<T> = (commit: Function) => void
 type CMPL<T> = (commit: Function, payload: A2<T>) => void
 type Committer<T> = T extends MT<T> ? CM<T> : CMPL<T>
-type Committers<T> = { readonly [K in keyof T]: Committer<T[K]> }
-type ProxyMapMutations<T> = (mapHelperOption: MapHelperOption<T>) => any
+type InferCommit<T> = { readonly [K in keyof T]: Committer<T[K]> }
+type InferMapMutations<T> = (mapHelperOption: MapHelperOption<T>) => any
 interface FromMutationsReturn<T> {
   readonly mutationTypes: Types<T>
-  readonly committers: Committers<T>
-  readonly proxyMapMutations: ProxyMapMutations<T>
+  readonly inferCommit: InferCommit<T>
+  readonly inferMapMutations: InferMapMutations<T>
 }
 
 // DECL
@@ -34,8 +34,8 @@ declare function fromMutations<T extends KeyMap & Mutations<T>>(
 
 export {
   Mutations,
-  Committers,
-  ProxyMapMutations,
+  InferCommit,
+  InferMapMutations,
   FromMutationsReturn,
   fromMutations
 }

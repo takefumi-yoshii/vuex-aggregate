@@ -4,8 +4,8 @@
 [![CircleCI](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate.svg?style=svg)](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate)
 
 Inferred types helper module for Vuex.(Required TypeScript2.8 or higher) 
-Generated committers provide `store.commit` proxy, and 
-Generated dispatchers provide `store.dispatch` proxy with inferred types. 
+Generated inferCommit provide `store.commit` proxy, and 
+Generated inferDispatch provide `store.dispatch` proxy with inferred types. 
 Let's reconfirm the vulnerability of Flux pattern at the beginning.
 
 ### Try refactor mutation name.
@@ -101,7 +101,7 @@ const Model: Modeler<State> = injects => ({
   isRunningAutoIncrement: false,
   ...injects
 })
-const { proxyMapState } = fromState(Model(), namespace)
+const { inferMapState } = fromState(Model(), namespace)
 
 // ______________________________________________________
 //
@@ -126,7 +126,7 @@ const getters = {
     }
   }
 }
-const { proxyGetters, proxyMapGetters } = fromGetters(getters, namespace)
+const { inferGetters, inferMapGetters } = fromGetters(getters, namespace)
 
 // ______________________________________________________
 //
@@ -149,7 +149,7 @@ const mutations = {
     state.isRunningAutoIncrement = flag
   }
 }
-const { committers, mutationTypes, proxyMapMutations } = fromMutations(
+const { inferCommit, mutationTypes, inferMapMutations } = fromMutations(
   mutations,
   namespace
 )
@@ -161,21 +161,21 @@ const { committers, mutationTypes, proxyMapMutations } = fromMutations(
 const actions = {
   async asyncIncrement({ commit }: { commit: Function }, duration: number) {
     await wait(duration)
-    committers.increment(commit)
+    inferCommit.increment(commit)
   },
   async toggleAutoIncrement(
     { commit, state }: { commit: Function; state: State },
     { duration, flag }: { duration: number; flag: boolean }
   ) {
-    committers.setRunningAutoIncrement(commit, flag)
+    inferCommit.setRunningAutoIncrement(commit, flag)
     while (true) {
       if (!state.isRunningAutoIncrement) break
       await wait(duration)
-      committers.increment(commit)
+      inferCommit.increment(commit)
     }
   }
 }
-const { dispatchers, actionTypes, proxyMapActions } = fromActions(
+const { inferDispatch, actionTypes, inferMapActions } = fromActions(
   actions,
   namespace
 )
