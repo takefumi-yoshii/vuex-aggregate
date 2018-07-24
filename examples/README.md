@@ -50,17 +50,17 @@ setName(state: CounterState, payload: { name: string }): void {
 refactor payload schema @ `src/store/modules/counter.ts`
 
 ```javascript
-async asyncIncrement({ commit }: { commit: Function }, duration: number) {
-  await wait(duration)
-  committers.increment(commit)
-}
+async toggleAutoIncrement(
+  { commit, state }: { commit: Function; state: State },
+  { duration, flag }: { duration: number; flag: boolean }
+) {
 ```
 Even if you do not need a payload, an error will occur if given payload.  
 According to specifications, actions expect to return Promise and inferred types return Promise.  
 
 ```javascript
-async asyncIncrement({ commit }: { commit: Function }) {
-  await wait()
-  committers.increment(commit)
-}
+async toggleAutoIncrement(
+  { commit, state }: { commit: Function; state: State },
+  { flag }: { flag: boolean }
+) {
 ```

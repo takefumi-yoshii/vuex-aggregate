@@ -51,26 +51,26 @@ setName(state: CounterState, payload: { name: string }): void {
 refactor payload schema @ `examples/src/store/modules/counter.ts`
 
 ```javascript
-async asyncIncrement({ commit }: { commit: Function }, duration: number) {
-  await wait(duration)
-  committers.increment(commit)
-}
+async toggleAutoIncrement(
+  { commit, state }: { commit: Function; state: State },
+  { duration, flag }: { duration: number; flag: boolean }
+) {
 ```
 Even if you do not need a payload, an error will occur if given payload.  
 According to specifications, actions expect to return Promise and inferred types return Promise.  
 
 ```javascript
-async asyncIncrement({ commit }: { commit: Function }) {
-  await wait()
-  committers.increment(commit)
-}
+async toggleAutoIncrement(
+  { commit, state }: { commit: Function; state: State },
+  { flag }: { flag: boolean }
+) {
 ```
 
 
 # Usage
 
-Wrap your mutations and actions with unique namespace by vuex-aggregate provided APIs.
-`fromMutations` is for mutations, `fromActions` is for actions.
+Wrap your mutations and actions with unique namespace by vuex-aggregate provided APIs.  
+`fromMutations` is for mutations, `fromActions` is for actions, `fromGetters` is for getters.  
 `namespace` must to be match modulename.
 
 ```javascript
@@ -87,42 +87,40 @@ import { wait } from '../../utils/promise'
 //
 // @ Model
 
-const namespace = 'counter'
-
-interface CounterState {
+interface State {
   count: number
   name: string
   isRunningAutoIncrement: boolean
 }
-
-const CounterModel: Modeler<CounterState> = injects => ({
+const Model: Modeler<State> = injects => ({
   count: 0,
   name: 'unknown',
   isRunningAutoIncrement: false,
   ...injects
 })
+const namespace = 'counter'
 
 // ______________________________________________________
 //
 // @ Getters
 
 const getters = {
-  countLabel(state: CounterState): (unit: string) => string {
-    return (unit: string) => {
-      return `${state.count} ${unit}`
-    }
+  nameLabel(state: State): string {
+    return `my name is ${state.name}`
   },
-  expo(state: CounterState): (amount: number) => number {
-    return (amount: number) => {
-      return state.count ** amount
-    }
-  },
-  autoIncrementLabel(state: CounterState): string {
+  autoIncrementLabel(state: State): string {
     const flag = state.isRunningAutoIncrement
     return flag ? 'true' : 'false'
   },
-  nameLabel(state: CounterState): string {
-    return `my name is ${state.name}`
+  countLabel(state: State): (unit: string) => string {
+    return unit => {
+      return `${state.count} ${unit}`
+    }
+  },
+  expo(state: State): (amount: number) => number {
+    return amount => {
+      return state.count ** amount
+    }
   }
 }
 const { proxyGetters, proxyMapGetters } = fromGetters(getters, namespace)
@@ -132,19 +130,19 @@ const { proxyGetters, proxyMapGetters } = fromGetters(getters, namespace)
 // @ Mutations
 
 const mutations = {
-  increment(state: CounterState): void {
+  increment(state: State): void {
     state.count++
   },
-  decrement(state: CounterState): void {
+  decrement(state: State): void {
     state.count--
   },
-  setCount(state: CounterState, count: number): void {
+  setCount(state: State, count: number): void {
     state.count = count
   },
-  setName(state: CounterState, name: string): void {
+  setName(state: State, name: string): void {
     state.name = name
   },
-  setRunningAutoIncrement(state: CounterState, flag: boolean): void {
+  setRunningAutoIncrement(state: State, flag: boolean): void {
     state.isRunningAutoIncrement = flag
   }
 }
@@ -163,7 +161,7 @@ const actions = {
     committers.increment(commit)
   },
   async toggleAutoIncrement(
-    { commit, state }: { commit: Function; state: CounterState },
+    { commit, state }: { commit: Function; state: State },
     { duration, flag }: { duration: number; flag: boolean }
   ) {
     committers.setRunningAutoIncrement(commit, flag)
@@ -178,23 +176,34 @@ const { dispatchers, actionTypes, proxyMapActions } = fromActions(
   actions,
   namespace
 )
-
 ```
 vuex-aggregate assumed to use shallow modules.
 Please specify `namespaced: true` at module.
 
 ```javascript
-export const CounterModule = (injects?: Injects<CounterState>) => ({
+// ______________________________________________________
+//
+// @ ModuleFactory
+
+const moduleFactory = (injects?: Injects<State>) => ({
   namespaced: true, // Required
-  state: CounterModel(injects),
+  state: Model(injects),
+  getters,
   mutations,
   actions
 })
+```
+```javascript
+import Vuex from 'vuex'
+import * as Counter from './modules/counter'
+
+// ______________________________________________________
+//
+// @ Store
 
 export const store = new Vuex.Store({
   modules: {
-    // It is necessary to match the module name to a defined namespace such as `counter '.
-    counter: CounterModule({ name: 'COUNTER' })
+    [Counter.namespace]: Counter.moduleFactory({ name: 'COUNTER' })
   }
 })
 
