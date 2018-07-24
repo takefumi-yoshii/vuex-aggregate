@@ -32,4 +32,10 @@ declare function fromActions<T extends KeyMap & Actions<T>>(
 //
 // @ exports
 
-export { Actions, InferDispatches, InferMapActions, FromActionsReturn, fromActions }
+export {
+  Actions,
+  InferDispatches,
+  InferMapActions,
+  FromActionsReturn,
+  fromActions
+}
