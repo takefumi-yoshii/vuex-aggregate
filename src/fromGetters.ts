@@ -1,3 +1,4 @@
+import { mapGetters } from 'vuex'
 import { KeyMap, MapHelperOption } from '../typings/utils.d'
 import {
   Getters,
@@ -5,6 +6,12 @@ import {
   ProxyMapGetters,
   FromGettersReturn
 } from '../typings/fromGetters.d'
+declare module 'vuex' {
+  export function mapGetters(
+    namespace: string,
+    mapHelperOption: MapHelperOption<any>
+  ): void
+}
 
 const namespaced: KeyMap = {}
 
@@ -30,11 +37,8 @@ function fromGetters<T extends KeyMap & Getters<T>>(
       return state[getterKey](args)
     }
   })
-  function proxyMapGetters<H extends Function, O extends MapHelperOption<T>>(
-    mapHelper: H,
-    mapHelperOption: O
-  ) {
-    return mapHelper(namespace, mapHelperOption)
+  function proxyMapGetters<O extends MapHelperOption<T>>(mapHelperOption: O) {
+    return mapGetters(namespace, mapHelperOption)
   }
   return {
     proxyGetters: proxyGetters as ProxyGetters<T>,

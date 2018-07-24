@@ -15,10 +15,7 @@ type DP<T> = (diapatch: Function) => Promise<any>
 type DPPL<T> = (diapatch: Function, payload: A2<T>) => Promise<any>
 type Dispatcher<T> = T extends AC<T> ? DP<T> : DPPL<T>
 type Dispatchers<T> = { readonly [K in keyof T]: Dispatcher<T[K]> }
-type ProxyMapActions<T> = (
-  mapActions: Function,
-  mapHelperOption: MapHelperOption<T>
-) => any
+type ProxyMapActions<T> = (mapHelperOption: MapHelperOption<T>) => any
 interface FromActionsReturn<A> {
   readonly actionTypes: Types<A>
   readonly dispatchers: Dispatchers<A>

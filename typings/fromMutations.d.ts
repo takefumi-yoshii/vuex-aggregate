@@ -15,10 +15,7 @@ type CM<T> = (commit: Function) => void
 type CMPL<T> = (commit: Function, payload: A2<T>) => void
 type Committer<T> = T extends MT<T> ? CM<T> : CMPL<T>
 type Committers<T> = { readonly [K in keyof T]: Committer<T[K]> }
-type ProxyMapMutations<T> = (
-  mapMutations: Function,
-  mapHelperOption: MapHelperOption<T>
-) => any
+type ProxyMapMutations<T> = (mapHelperOption: MapHelperOption<T>) => any
 interface FromMutationsReturn<T> {
   readonly mutationTypes: Types<T>
   readonly committers: Committers<T>

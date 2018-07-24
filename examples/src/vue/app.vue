@@ -20,16 +20,15 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import { BoundsStore } from '../store/index'
 import * as Counter from '../store/modules/counter'
 
 const computed: ThisType<BoundsStore> = {
-  ...Counter.proxyMapState(mapState, ['count']),
-  ...Counter.proxyMapState(mapState, {
+  ...Counter.proxyMapState(['count']),
+  ...Counter.proxyMapState({
     double: state => state.count * 2
   }),
-  ...Counter.proxyMapGetters(mapGetters, ['nameLabel', 'autoIncrementLabel']),
+  ...Counter.proxyMapGetters(['nameLabel', 'autoIncrementLabel']),
   countLabel() {
     return Counter.proxyGetters.countLabel(this.$store.getters, 'pt')
   },
@@ -39,8 +38,8 @@ const computed: ThisType<BoundsStore> = {
 }
 
 const methods: ThisType<BoundsStore> = {
-  ...Counter.proxyMapMutations(mapMutations, ['increment', 'decrement']),
-  ...Counter.proxyMapActions(mapActions, ['asyncIncrement']),
+  ...Counter.proxyMapMutations(['increment', 'decrement']),
+  ...Counter.proxyMapActions(['asyncIncrement']),
   setName(value: string) {
     Counter.committers.setName(this.$store.commit, value)
   },
