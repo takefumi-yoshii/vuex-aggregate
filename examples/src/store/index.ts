@@ -13,6 +13,7 @@ export interface Store {
   state: StoreState
   commit: Function
   dispatch: Function
+  getters: any
 }
 export interface BoundsStore {
   $store: Store

@@ -1,4 +1,4 @@
-import { fromMutations, fromActions, Injects, Modeler } from 'vuex-aggregate'
+import { fromMutations, fromActions, fromGetters, Injects, Modeler } from '../../../../src'
 import { wait } from '../../utils/promise'
 
 // ______________________________________________________
@@ -19,6 +19,24 @@ const CounterModel: Modeler<CounterState> = injects => ({
   isRunningAutoIncrement: false,
   ...injects
 })
+
+// ______________________________________________________
+//
+// @ Getters
+
+const getters = {
+  autoIncrementLabel(state: CounterState): string {
+    const flag = state.isRunningAutoIncrement
+    return flag ? 'true' : 'false'
+  },
+  expo(state: CounterState): (amount: number) => number {
+    return (amount: number) => {
+      return state.count ** amount
+    }
+  }
+}
+
+export const { proxyGetters } = fromGetters(getters, namespace)
 
 // ______________________________________________________
 //
@@ -72,6 +90,7 @@ export const { dispatchers, actionTypes } = fromActions(actions, namespace)
 export const CounterModule = (injects?: Injects<CounterState>) => ({
   namespaced: true, // Required
   state: CounterModel(injects),
+  getters,
   mutations,
   actions
 })
