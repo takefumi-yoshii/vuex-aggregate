@@ -7,10 +7,10 @@ type MapStateHelperOption<T> =
   | Array<keyof T>
   | { [k: string]: keyof T | StateGetter<T> }
 
-type ProxyMapState<T> = (mapStateHelperOption: MapStateHelperOption<T>) => any
+type InferMapState<T> = (mapStateHelperOption: MapStateHelperOption<T>) => any
 
 interface FromStateReturn<T> {
-  readonly proxyMapState: ProxyMapState<T>
+  readonly inferMapState: InferMapState<T>
 }
 
 // DECL
@@ -20,4 +20,4 @@ declare function fromState<T>(state: T, namespace: string): FromStateReturn<T>
 //
 // @ exports
 
-export { MapStateHelperOption, ProxyMapState, FromStateReturn, fromState }
+export { MapStateHelperOption, InferMapState, FromStateReturn, fromState }

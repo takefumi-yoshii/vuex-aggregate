@@ -2,8 +2,8 @@ import { mapGetters } from 'vuex'
 import { KeyMap, MapHelperOption } from '../typings/utils.d'
 import {
   Getters,
-  ProxyGetters,
-  ProxyMapGetters,
+  InferGetters,
+  InferMapGetters,
   FromGettersReturn
 } from '../typings/fromGetters.d'
 
@@ -23,21 +23,21 @@ function fromGetters<T extends KeyMap & Getters<T>>(
   } else {
     namespaced[namespace] = namespace
   }
-  const proxyGetters: KeyMap = {}
+  const inferGetters: KeyMap = {}
   Object.keys(getters).forEach(key => {
     const getterKey = `${namespace}/${key}`
-    proxyGetters[key] = (state: KeyMap, args?: any) => {
+    inferGetters[key] = (state: KeyMap, args?: any) => {
       if (typeof state[getterKey] !== 'function') return state[getterKey]
       return state[getterKey](args)
     }
   })
-  function proxyMapGetters<O extends MapHelperOption<T>>(mapHelperOption: O) {
+  function inferMapGetters<O extends MapHelperOption<T>>(mapHelperOption: O) {
     const mapper = mapGetters as any
     return mapper(namespace, mapHelperOption)
   }
   return {
-    proxyGetters: proxyGetters as ProxyGetters<T>,
-    proxyMapGetters: proxyMapGetters as ProxyMapGetters<T>
+    inferGetters: inferGetters as InferGetters<T>,
+    inferMapGetters: inferMapGetters as InferMapGetters<T>
   }
 }
 

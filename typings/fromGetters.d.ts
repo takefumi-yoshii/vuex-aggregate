@@ -14,12 +14,12 @@ type Getters<T> = { [K in keyof T]: Getter<T[K]> }
 type PGT<T> = (getters: any) => R<T>
 type PGTR<T> = (getters: any, args: RA1<T>) => RR<T>
 type ProxyGetter<T> = T extends GTR<T> ? PGTR<T> : PGT<T>
-type ProxyGetters<T> = { readonly [K in keyof T]: ProxyGetter<T[K]> }
-type ProxyMapGetters<T> = (mapHelperOption: MapHelperOption<T>) => any
+type InferGetters<T> = { readonly [K in keyof T]: ProxyGetter<T[K]> }
+type InferMapGetters<T> = (mapHelperOption: MapHelperOption<T>) => any
 
 interface FromGettersReturn<G> {
-  readonly proxyGetters: ProxyGetters<G>
-  readonly proxyMapGetters: ProxyMapGetters<G>
+  readonly inferGetters: InferGetters<G>
+  readonly inferMapGetters: InferMapGetters<G>
 }
 
 // DECL
@@ -34,8 +34,8 @@ declare function fromGetters<T extends KeyMap & Getters<T>>(
 
 export {
   Getters,
-  ProxyGetters,
-  ProxyMapGetters,
+  InferGetters,
+  InferMapGetters,
   FromGettersReturn,
   fromGetters
 }

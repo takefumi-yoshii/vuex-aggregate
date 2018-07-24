@@ -25,7 +25,7 @@ const Model: Modeler<State> = injects => ({
   isRunningAutoIncrement: false,
   ...injects
 })
-const { proxyMapState } = fromState(Model(), namespace)
+const { inferMapState } = fromState(Model(), namespace)
 
 // ______________________________________________________
 //
@@ -50,7 +50,7 @@ const getters = {
     }
   }
 }
-const { proxyGetters, proxyMapGetters } = fromGetters(getters, namespace)
+const { inferGetters, inferMapGetters } = fromGetters(getters, namespace)
 
 // ______________________________________________________
 //
@@ -73,7 +73,7 @@ const mutations = {
     state.isRunningAutoIncrement = flag
   }
 }
-const { committers, mutationTypes, proxyMapMutations } = fromMutations(
+const { mutationTypes, inferCommits, inferMapMutations } = fromMutations(
   mutations,
   namespace
 )
@@ -85,21 +85,21 @@ const { committers, mutationTypes, proxyMapMutations } = fromMutations(
 const actions = {
   async asyncIncrement({ commit }: { commit: Function }, duration: number) {
     await wait(duration)
-    committers.increment(commit)
+    inferCommits.increment(commit)
   },
   async toggleAutoIncrement(
     { commit, state }: { commit: Function; state: State },
     { duration, flag }: { duration: number; flag: boolean }
   ) {
-    committers.setRunningAutoIncrement(commit, flag)
+    inferCommits.setRunningAutoIncrement(commit, flag)
     while (true) {
       if (!state.isRunningAutoIncrement) break
       await wait(duration)
-      committers.increment(commit)
+      inferCommits.increment(commit)
     }
   }
 }
-const { dispatchers, actionTypes, proxyMapActions } = fromActions(
+const { actionTypes, inferDispatches, inferMapActions } = fromActions(
   actions,
   namespace
 )
@@ -119,14 +119,14 @@ const moduleFactory = (injects?: Injects<State>) => ({
 export {
   State,
   namespace,
-  moduleFactory,
   mutationTypes,
   actionTypes,
-  committers,
-  dispatchers,
-  proxyMapState,
-  proxyGetters,
-  proxyMapGetters,
-  proxyMapMutations,
-  proxyMapActions
+  inferCommits,
+  inferDispatches,
+  inferMapState,
+  inferGetters,
+  inferMapGetters,
+  inferMapMutations,
+  inferMapActions,
+  moduleFactory
 }

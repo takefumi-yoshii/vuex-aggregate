@@ -24,28 +24,28 @@ import { BoundsStore } from '../store/index'
 import * as Counter from '../store/modules/counter'
 
 const computed: ThisType<BoundsStore> = {
-  ...Counter.proxyMapState(['count']),
-  ...Counter.proxyMapState({
+  ...Counter.inferMapState(['count']),
+  ...Counter.inferMapState({
     double: state => state.count * 2
   }),
-  ...Counter.proxyMapGetters(['nameLabel', 'autoIncrementLabel']),
+  ...Counter.inferMapGetters(['nameLabel', 'autoIncrementLabel']),
   countLabel() {
-    return Counter.proxyGetters.countLabel(this.$store.getters, 'pt')
+    return Counter.inferGetters.countLabel(this.$store.getters, 'pt')
   },
   expo2() {
-    return Counter.proxyGetters.expo(this.$store.getters, 2)
+    return Counter.inferGetters.expo(this.$store.getters, 2)
   }
 }
 
 const methods: ThisType<BoundsStore> = {
-  ...Counter.proxyMapMutations(['increment', 'decrement']),
-  ...Counter.proxyMapActions(['asyncIncrement']),
+  ...Counter.inferMapMutations(['increment', 'decrement']),
+  ...Counter.inferMapActions(['asyncIncrement']),
   setName(value: string) {
-    Counter.committers.setName(this.$store.commit, value)
+    Counter.inferCommits.setName(this.$store.commit, value)
   },
   toggleAutoIncrement(duration: number) {
     const flag = !this.$store.state.counter.isRunningAutoIncrement
-    Counter.dispatchers.toggleAutoIncrement(this.$store.dispatch, {
+    Counter.inferDispatches.toggleAutoIncrement(this.$store.dispatch, {
       duration,
       flag
     })
