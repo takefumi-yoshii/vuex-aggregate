@@ -4,7 +4,9 @@
 
 type KeyMap = { [K: string]: any }
 type R<T> = T extends (...rest: any[]) => infer I ? I : never
-type RR<T> = T extends (...rest: any[]) => (...rest: any[]) => infer I ? I : never
+type RR<T> = T extends (...rest: any[]) => (...rest: any[]) => infer I
+  ? I
+  : never
 
 type A1<T> = T extends (a1: infer I, ...rest: any[]) => any ? I : never
 type A2<T> = T extends (a1: any, a2: infer I, ...rest: any[]) => any ? I : never

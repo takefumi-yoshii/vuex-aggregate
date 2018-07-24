@@ -5,8 +5,8 @@ import { KeyMap, RA1, R, RR, Types } from './utils.d'
 // @ fromGetters
 
 // IN
-type GT<T> = (getters: any) => any
-type GTR<T> = (getters: any) => (args: any) => any
+type GT<T> = (getters: any, contextGetters?: any) => any
+type GTR<T> = (getters: any, contextGetters?: any) => (args: any) => any
 type Getter<T> = GT<T> | GTR<T>
 type Getters<T> = { [K in keyof T]: Getter<T[K]> }
 
