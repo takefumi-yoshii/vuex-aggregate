@@ -1,15 +1,18 @@
 import {
+  fromState,
   fromMutations,
   fromActions,
   fromGetters,
   Injects,
   Modeler
-} from 'vuex-aggregate'
+} from '../../../../src'
 import { wait } from '../../utils/promise'
 
 // ______________________________________________________
 //
 // @ Model
+
+const namespace = 'counter'
 
 interface State {
   count: number
@@ -22,7 +25,7 @@ const Model: Modeler<State> = injects => ({
   isRunningAutoIncrement: false,
   ...injects
 })
-const namespace = 'counter'
+const { proxyMapState } = fromState(Model(), namespace)
 
 // ______________________________________________________
 //
@@ -121,6 +124,7 @@ export {
   actionTypes,
   committers,
   dispatchers,
+  proxyMapState,
   proxyGetters,
   proxyMapGetters,
   proxyMapMutations,
