@@ -6,12 +6,6 @@ import {
   ProxyMapGetters,
   FromGettersReturn
 } from '../typings/fromGetters.d'
-declare module 'vuex' {
-  export function mapGetters(
-    namespace: string,
-    mapHelperOption: MapHelperOption<any>
-  ): void
-}
 
 const namespaced: KeyMap = {}
 
@@ -38,7 +32,8 @@ function fromGetters<T extends KeyMap & Getters<T>>(
     }
   })
   function proxyMapGetters<O extends MapHelperOption<T>>(mapHelperOption: O) {
-    return mapGetters(namespace, mapHelperOption)
+    const mapper = mapGetters as any
+    return mapper(namespace, mapHelperOption)
   }
   return {
     proxyGetters: proxyGetters as ProxyGetters<T>,

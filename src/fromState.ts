@@ -5,12 +5,6 @@ import {
   ProxyMapState,
   MapStateHelperOption
 } from '../typings/fromState.d'
-declare module 'vuex' {
-  export function mapState(
-    namespace: string,
-    mapHelperOption: MapStateHelperOption<any>
-  ): void
-}
 
 const namespaced: KeyMap = {}
 
@@ -28,7 +22,8 @@ function fromState<T>(state: T, namespace: string): FromStateReturn<T> {
   function proxyMapState<O extends MapStateHelperOption<T>>(
     mapHelperOption: O
   ) {
-    return mapState(namespace, mapHelperOption)
+    const mapper = mapState as any
+    return mapper(namespace, mapHelperOption)
   }
   return {
     proxyMapState: proxyMapState as ProxyMapState<T>

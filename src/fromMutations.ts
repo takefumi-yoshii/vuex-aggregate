@@ -6,12 +6,6 @@ import {
   ProxyMapMutations,
   FromMutationsReturn
 } from '../typings/fromMutations.d'
-declare module 'vuex' {
-  export function mapMutations(
-    namespace: string,
-    mapHelperOption: MapHelperOption<any>
-  ): void
-}
 
 const namespaced: KeyMap = {}
 
@@ -39,7 +33,8 @@ function fromMutations<T extends KeyMap & Mutations<T>>(
     }
   })
   function proxyMapMutations<O extends MapHelperOption<T>>(mapHelperOption: O) {
-    return mapMutations(namespace, mapHelperOption)
+    const mapper = mapMutations as any
+    return mapper(namespace, mapHelperOption)
   }
   return {
     mutationTypes: mutationTypes as Types<T>,

@@ -6,12 +6,6 @@ import {
   ProxyMapActions,
   FromActionsReturn
 } from '../typings/fromActions.d'
-declare module 'vuex' {
-  export function mapActions(
-    namespace: string,
-    mapHelperOption: MapHelperOption<any>
-  ): void
-}
 
 const namespaced: KeyMap = {}
 
@@ -39,7 +33,8 @@ function fromActions<T extends KeyMap & Actions<T>>(
     }
   })
   function proxyMapActions<O extends MapHelperOption<T>>(mapHelperOption: O) {
-    return mapActions(namespace, mapHelperOption)
+    const mapper = mapActions as any
+    return mapper(namespace, mapHelperOption)
   }
   return {
     actionTypes: actionTypes as Types<T>,
