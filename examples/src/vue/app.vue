@@ -20,34 +20,30 @@
 import Vue from 'vue'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { BoundsStore } from '../store/index'
-import {
-  dispatchers,
-  committers,
-  proxyGetters,
-  proxyMapGetters,
-  proxyMapMutations,
-  proxyMapActions
-} from '../store/modules/counter'
+import * as Counter from '../store/modules/counter'
 
 const computed: ThisType<BoundsStore> = {
+  ...Counter.proxyMapGetters(mapGetters, ['nameLabel', 'autoIncrementLabel']),
   countLabel() {
-    return proxyGetters.countLabel(this.$store.getters, 'pt')
+    return Counter.proxyGetters.countLabel(this.$store.getters, 'pt')
   },
   expo2() {
-    return proxyGetters.expo(this.$store.getters, 2)
-  },
-  ...proxyMapGetters(mapGetters, ['nameLabel', 'autoIncrementLabel'])
+    return Counter.proxyGetters.expo(this.$store.getters, 2)
+  }
 }
 
 const methods: ThisType<BoundsStore> = {
-  ...proxyMapMutations(mapMutations, ['increment', 'decrement']),
+  ...Counter.proxyMapMutations(mapMutations, ['increment', 'decrement']),
+  ...Counter.proxyMapActions(mapActions, ['asyncIncrement']),
   setName(value: string) {
-    committers.setName(this.$store.commit, value)
+    Counter.committers.setName(this.$store.commit, value)
   },
-  ...proxyMapActions(mapActions, ['asyncIncrement']),
   toggleAutoIncrement(duration: number) {
     const flag = !this.$store.state.counter.isRunningAutoIncrement
-    dispatchers.toggleAutoIncrement(this.$store.dispatch, { duration, flag })
+    Counter.dispatchers.toggleAutoIncrement(this.$store.dispatch, {
+      duration,
+      flag
+    })
   }
 }
 

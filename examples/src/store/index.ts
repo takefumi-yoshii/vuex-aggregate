@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { CounterModule, CounterState } from './modules/counter'
+import * as Counter from './modules/counter'
 
 // ______________________________________________________
 //
 // @ Types
 
 export interface StoreState {
-  counter: CounterState
+  counter: Counter.State
 }
 export interface Store {
   state: StoreState
@@ -25,6 +25,6 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   modules: {
-    counter: CounterModule({ name: 'COUNTER' })
+    [Counter.namespace]: Counter.moduleFactory({ name: 'COUNTER' })
   }
 })
