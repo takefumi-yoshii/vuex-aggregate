@@ -71,12 +71,25 @@ async asyncIncrement({ commit }: { commit: Function }) {
 
 Wrap your mutations and actions with unique namespace by vuex-aggregate provided APIs.
 `fromMutations` is for mutations, `fromActions` is for actions.
-`namespace` must to be align modulename.
+`namespace` must to be match modulename.
 
 ```javascript
 import { fromMutations, fromActions } from 'vuex-aggregate'
 
 export const namespace = 'counter'
+
+// ______________________________________________________
+//
+// @ Getters
+
+const getters = {
+  expo(state: CounterState): (amount: number) => number {
+    return (amount: number) => {
+      return state.count ** amount
+    }
+  }
+}
+export const { proxyGetters } = fromGetters(getters, namespace)
 
 // ______________________________________________________
 //
