@@ -29,6 +29,13 @@ const namespace = 'counter'
 // @ Getters
 
 const getters = {
+  nameLabel(state: State): string {
+    return `my name is ${state.name}`
+  },
+  autoIncrementLabel(state: State): string {
+    const flag = state.isRunningAutoIncrement
+    return flag ? 'true' : 'false'
+  },
   countLabel(state: State): (unit: string) => string {
     return unit => {
       return `${state.count} ${unit}`
@@ -38,13 +45,6 @@ const getters = {
     return amount => {
       return state.count ** amount
     }
-  },
-  autoIncrementLabel(state: State): string {
-    const flag = state.isRunningAutoIncrement
-    return flag ? 'true' : 'false'
-  },
-  nameLabel(state: State): string {
-    return `my name is ${state.name}`
   }
 }
 const { proxyGetters, proxyMapGetters } = fromGetters(getters, namespace)
