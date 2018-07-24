@@ -119,14 +119,14 @@ const moduleFactory = (injects?: Injects<State>) => ({
 export {
   State,
   namespace,
+  moduleFactory,
   mutationTypes,
   actionTypes,
-  inferCommits,
-  inferDispatches,
-  inferMapState,
-  inferGetters,
-  inferMapGetters,
-  inferMapMutations,
-  inferMapActions,
-  moduleFactory
+  inferCommits as commits,
+  inferDispatches as dispatches,
+  inferMapState as mapState,
+  inferGetters as getters,
+  inferMapGetters as mapGetters,
+  inferMapMutations as mapMutations,
+  inferMapActions as mapActions,
 }
