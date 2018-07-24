@@ -6,6 +6,7 @@
     <p>name = {{nameLabel}}</p>
     <div>
       <button @click="increment()">+1</button>
+      <button @click="decrement()">-1</button>
       <button @click="asyncIncrement(1000)">asyncIncrement</button>
       <button @click="toggleAutoIncrement(100)">toggleAutoIncrement</button>
     </div>
@@ -17,35 +18,34 @@
 
 <script lang='ts'>
 import Vue from 'vue'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { BoundsStore } from '../store/index'
-import { committers, dispatchers, proxyGetters } from '../store/modules/counter'
+import {
+  dispatchers,
+  committers,
+  proxyGetters,
+  proxyMapGetters,
+  proxyMapMutations,
+  proxyMapActions
+} from '../store/modules/counter'
 
 const computed: ThisType<BoundsStore> = {
-  countLabel () {
+  countLabel() {
     return proxyGetters.countLabel(this.$store.getters, 'pt')
   },
-  nameLabel () {
-    return proxyGetters.nameLabel(this.$store.getters)
-  },
-  expo2 () {
+  expo2() {
     return proxyGetters.expo(this.$store.getters, 2)
   },
-  autoIncrementLabel() {
-    return proxyGetters.autoIncrementLabel(this.$store.getters)
-  }
+  ...proxyMapGetters(mapGetters, ['nameLabel', 'autoIncrementLabel'])
 }
 
 const methods: ThisType<BoundsStore> = {
-  increment () {
-    committers.increment(this.$store.commit)
-  },
-  setName (value: string) {
+  ...proxyMapMutations(mapMutations, ['increment', 'decrement']),
+  setName(value: string) {
     committers.setName(this.$store.commit, value)
   },
-  asyncIncrement (duration: number) {
-    dispatchers.asyncIncrement(this.$store.dispatch, duration)
-  },
-  toggleAutoIncrement (duration: number) {
+  ...proxyMapActions(mapActions, ['asyncIncrement']),
+  toggleAutoIncrement(duration: number) {
     const flag = !this.$store.state.counter.isRunningAutoIncrement
     dispatchers.toggleAutoIncrement(this.$store.dispatch, { duration, flag })
   }
