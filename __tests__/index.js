@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { fromMutations, fromActions } from '../dist/index'
+import { fromMutations, fromActions, use } from '../dist/index'
 Vue.use(Vuex)
 
 // ______________________________________________________
@@ -9,7 +9,7 @@ Vue.use(Vuex)
 
 const namespace = 'counter'
 
-const CounterModel = injects => ({
+const stateFactory = injects => ({
   count: 0,
   name: 'my name',
   ...injects
@@ -32,27 +32,27 @@ const mutations = {
 const { commits, mutationTypes } = fromMutations(mutations, namespace)
 
 const actions = {
-  async asyncIncrement({ commit }, duration) {
-    commits.increment(commit)
+  async asyncIncrement() {
+    commits.increment()
     return 'asyncIncrement called'
   }
 }
 const { dispatches, actionTypes } = fromActions(actions, namespace)
 
-const CounterModule = injects => ({
+const moduleFactory = injects => ({
   namespaced: true,
-  state: CounterModel(injects),
+  state: stateFactory(injects),
   mutations,
   actions
 })
 
-function createStore () {
-  return new Vuex.Store({
-    modules: {
-      counter: CounterModule({ name: 'COUNTER' })
-    }
-  })
-}
+const store = new Vuex.Store({
+  modules: {
+    counter: moduleFactory({ name: 'COUNTER' })
+  }
+})
+use(store)
+
 
 // ______________________________________________________
 //
@@ -76,35 +76,31 @@ describe('vuex-aggregate', () => {
   })
 
   describe('committer works normally', () => {
-    const store = createStore()
     test('count will be increment', () => {
       expect(store.state.counter.count).toEqual(0)
-      commits.increment(store.commit)
+      commits.increment()
       expect(store.state.counter.count).toEqual(1)
     })
   })
 
   describe('committer return void', () => {
-    const store = createStore()
     test('commiter will return undefined', () => {
-      const commitReturn = commits.increment(store.commit)
+      const commitReturn = commits.increment()
       expect(commitReturn).toEqual(undefined)
     })
   })
 
   describe('dispatcher works normally', () => {
-    const store = createStore()
     test('count will be increment', () => {
-      expect(store.state.counter.count).toEqual(0)
-      dispatches.asyncIncrement(store.dispatch)
-      expect(store.state.counter.count).toEqual(1)
+      expect(store.state.counter.count).toEqual(2)
+      dispatches.asyncIncrement()
+      expect(store.state.counter.count).toEqual(3)
     })
   })
 
   describe('dispatcher return Promise', () => {
-    const store = createStore()
     test('promise resolve then return value', async () => {
-      const dispatchReturn = await dispatches.asyncIncrement(store.dispatch)
+      const dispatchReturn = await dispatches.asyncIncrement()
       expect(dispatchReturn).toEqual('asyncIncrement called')
     })
   })
