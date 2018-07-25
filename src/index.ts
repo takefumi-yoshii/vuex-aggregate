@@ -1,4 +1,4 @@
-import { Injects, Modeler, use } from './utils'
+import { Injects, StateFactory, use } from './utils'
 import { fromState } from './fromState'
 import { fromGetters } from './fromGetters'
 import { fromMutations } from './fromMutations'
@@ -11,5 +11,5 @@ export {
   fromActions,
   use,
   Injects,
-  Modeler
+  StateFactory
 }
