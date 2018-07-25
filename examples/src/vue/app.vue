@@ -24,9 +24,7 @@ import * as Counter from '../store/modules/counter'
 
 const computed = {
   ...Counter.mapState(['count']),
-  ...Counter.mapState({
-    double: state => state.count * 2
-  }),
+  ...Counter.mapState({ double: state => state.count * 2 }),
   ...Counter.mapGetters(['nameLabel', 'autoIncrementLabel']),
   countLabel() {
     return Counter.getters.countLabel('pt')
