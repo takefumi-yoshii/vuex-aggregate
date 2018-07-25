@@ -4,20 +4,6 @@ import * as VuexAggregate from '../../../src'
 import * as Counter from './modules/counter'
 
 // ______________________________________________________
-//
-// @ Types
-
-interface StoreState {
-  counter: Counter.State
-}
-interface Store {
-  state: StoreState
-}
-interface BoundsStore {
-  $store: Store
-}
-
-// ______________________________________________________
 
 Vue.use(Vuex)
 
@@ -27,6 +13,6 @@ const store = new Vuex.Store({
   }
 })
 
-VuexAggregate.use(store)
+VuexAggregate.use(store) // Required
 
-export { StoreState, Store, BoundsStore, store }
+export { store }

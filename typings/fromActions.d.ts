@@ -1,4 +1,4 @@
-import { KeyMap, A2, Types, MapHelperOption } from './utils.d'
+import { KeyMap, A2, Types, MapOption } from './utils.d'
 
 // ______________________________________________________
 //
@@ -14,12 +14,12 @@ type Actions<T> = { [K in keyof T]: Action<T[K]> }
 type DP<T> = () => Promise<any>
 type DPPL<T> = (payload: A2<T>) => Promise<any>
 type Dispatcher<T> = T extends AC<T> ? DP<T> : DPPL<T>
-type InferDispatches<T> = { readonly [K in keyof T]: Dispatcher<T[K]> }
-type InferMapActions<T> = (mapHelperOption: MapHelperOption<T>) => any
+type Dispatches<T> = { readonly [K in keyof T]: Dispatcher<T[K]> }
+type MapActions<T> = (mapOption: MapOption<T>) => any
 interface FromActionsReturn<A> {
   readonly actionTypes: Types<A>
-  readonly inferDispatches: InferDispatches<A>
-  readonly inferMapActions: InferMapActions<A>
+  readonly dispatches: Dispatches<A>
+  readonly mapActions: MapActions<A>
 }
 
 // DECL
@@ -34,8 +34,8 @@ declare function fromActions<T extends KeyMap & Actions<T>>(
 
 export {
   Actions,
-  InferDispatches,
-  InferMapActions,
+  Dispatches,
+  MapActions,
   FromActionsReturn,
   fromActions
 }

@@ -9,7 +9,7 @@
     <div>
       <button @click="increment()">+1</button>
       <button @click="decrement()">-1</button>
-      <button @click="asyncIncrement(1000)">asyncIncrement</button>
+      <button @click="asyncIncrement()">asyncIncrement</button>
       <button @click="toggleAutoIncrement(100)">toggleAutoIncrement</button>
     </div>
     <div>
@@ -20,10 +20,9 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import { BoundsStore } from '../store/index'
 import * as Counter from '../store/modules/counter'
 
-const computed: ThisType<BoundsStore> = {
+const computed = {
   ...Counter.mapState(['count']),
   ...Counter.mapState({
     double: state => state.count * 2
@@ -37,18 +36,14 @@ const computed: ThisType<BoundsStore> = {
   }
 }
 
-const methods: ThisType<BoundsStore> = {
+const methods = {
   ...Counter.mapMutations(['increment', 'decrement']),
   ...Counter.mapActions(['asyncIncrement']),
   setName(value: string) {
     Counter.commits.setName(value)
   },
   toggleAutoIncrement(duration: number) {
-    const flag = !this.$store.state.counter.isRunningAutoIncrement
-    Counter.dispatches.toggleAutoIncrement({
-      duration,
-      flag
-    })
+    Counter.dispatches.toggleAutoIncrement({ duration })
   }
 }
 

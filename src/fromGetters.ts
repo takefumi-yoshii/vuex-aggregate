@@ -1,16 +1,16 @@
 import { mapGetters } from 'vuex'
 import { store } from './utils'
-import { KeyMap, MapHelperOption } from '../typings/utils.d'
+import { KeyMap, MapOption } from '../typings/utils.d'
 import {
+  IGetters,
   Getters,
-  InferGetters,
-  InferMapGetters,
+  MapGetters,
   FromGettersReturn
 } from '../typings/fromGetters.d'
 
 const namespaced: KeyMap = {}
 
-function fromGetters<T extends KeyMap & Getters<T>>(
+function fromGetters<T extends KeyMap & IGetters<T>>(
   getters: T,
   namespace: string
 ): FromGettersReturn<T> {
@@ -24,22 +24,22 @@ function fromGetters<T extends KeyMap & Getters<T>>(
   } else {
     namespaced[namespace] = namespace
   }
-  const inferGetters: KeyMap = {}
+  const _getters: KeyMap = {}
   Object.keys(getters).forEach(key => {
     const getterKey = `${namespace}/${key}`
-    inferGetters[key] = (args?: any) => {
+    _getters[key] = (args?: any) => {
       if (typeof store.getters[getterKey] !== 'function')
         return store.getters[getterKey]
       return store.getters[getterKey](args)
     }
   })
-  function inferMapGetters<O extends MapHelperOption<T>>(mapHelperOption: O) {
+  function _mapGetters<O extends MapOption<T>>(mapOption: O) {
     const mapper = mapGetters as any
-    return mapper(namespace, mapHelperOption)
+    return mapper(namespace, mapOption)
   }
   return {
-    inferGetters: inferGetters as InferGetters<T>,
-    inferMapGetters: inferMapGetters as InferMapGetters<T>
+    getters: _getters as Getters<T>,
+    mapGetters: _mapGetters as MapGetters<T>
   }
 }
 

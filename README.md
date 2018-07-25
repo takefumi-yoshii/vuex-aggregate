@@ -4,8 +4,8 @@
 [![CircleCI](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate.svg?style=svg)](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate)
 
 Inferred types helper module for Vuex.(Required TypeScript2.8 or higher) 
-Generated inferCommits provide `store.commit` proxy, and 
-Generated inferDispatches provide `store.dispatch` proxy with inferred types. 
+Generated commits provide `store.commit` proxy, and 
+Generated dispatches provide `store.dispatch` proxy with inferred types. 
 Let's reconfirm the vulnerability of Flux pattern at the beginning.
 
 ### Try refactor mutation name.
@@ -80,13 +80,13 @@ import {
   fromActions,
   fromGetters,
   Injects,
-  Modeler
+  StateFactory
 } from 'vuex-aggregate'
 import { wait } from '../../utils/promise'
 
 // ______________________________________________________
 //
-// @ Model
+// @ State
 
 const namespace = 'counter'
 
@@ -95,19 +95,19 @@ interface State {
   name: string
   isRunningAutoIncrement: boolean
 }
-const Model: Modeler<State> = injects => ({
+const stateFactory: StateFactory<State> = injects => ({
   count: 0,
   name: 'unknown',
   isRunningAutoIncrement: false,
   ...injects
 })
-const { inferMapState } = fromState(Model(), namespace)
+const { mapState } = fromState(stateFactory(), namespace)
 
 // ______________________________________________________
 //
 // @ Getters
 
-const getters = {
+const _getters = {
   nameLabel(state: State): string {
     return `my name is ${state.name}`
   },
@@ -126,7 +126,7 @@ const getters = {
     }
   }
 }
-const { inferGetters, inferMapGetters } = fromGetters(getters, namespace)
+const { getters, mapGetters } = fromGetters(_getters, namespace)
 
 // ______________________________________________________
 //
@@ -149,7 +149,7 @@ const mutations = {
     state.isRunningAutoIncrement = flag
   }
 }
-const { inferCommits, mutationTypes, inferMapMutations } = fromMutations(
+const { commits, mutationTypes, mapMutations } = fromMutations(
   mutations,
   namespace
 )
@@ -161,27 +161,28 @@ const { inferCommits, mutationTypes, inferMapMutations } = fromMutations(
 const actions = {
   async asyncIncrement({ commit }: { commit: Function }, duration: number) {
     await wait(duration)
-    inferCommits.increment(commit)
+    commits.increment(commit)
   },
   async toggleAutoIncrement(
     { commit, state }: { commit: Function; state: State },
     { duration, flag }: { duration: number; flag: boolean }
   ) {
-    inferCommits.setRunningAutoIncrement(commit, flag)
+    commits.setRunningAutoIncrement(commit, flag)
     while (true) {
       if (!state.isRunningAutoIncrement) break
       await wait(duration)
-      inferCommits.increment(commit)
+      commits.increment(commit)
     }
   }
 }
-const { inferDispatches, actionTypes, inferMapActions } = fromActions(
+const { dispatches, actionTypes, mapActions } = fromActions(
   actions,
   namespace
 )
 ```
 vuex-aggregate assumed to use shallow modules.
 Please specify `namespaced: true` at module.
+Finaly, declare `VuexAggregate.use(store)`.
 
 ```javascript
 // ______________________________________________________
@@ -190,7 +191,7 @@ Please specify `namespaced: true` at module.
 
 const moduleFactory = (injects?: Injects<State>) => ({
   namespaced: true, // Required
-  state: Model(injects),
+  state: stateFactory(injects),
   getters,
   mutations,
   actions
@@ -199,15 +200,18 @@ const moduleFactory = (injects?: Injects<State>) => ({
 ```javascript
 import Vuex from 'vuex'
 import * as Counter from './modules/counter'
+import * as VuexAggregate from 'vuex-aggregate'
 
 // ______________________________________________________
 //
 // @ Store
 
+Vue.use(Vuex)
 export const store = new Vuex.Store({
   modules: {
     [Counter.namespace]: Counter.moduleFactory({ name: 'COUNTER' })
   }
 })
+VuexAggregate.use(store) // Required
 
 ```
