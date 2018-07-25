@@ -1,6 +1,6 @@
 {
   "name": "vuex-aggregate",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Inferred types for vuex",
   "main": "src/index.ts",
   "typings": "typings/index.d.ts",
