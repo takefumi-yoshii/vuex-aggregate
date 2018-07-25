@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { fromMutations, fromActions } from '../dist/index'
+import { fromMutations, fromActions, use } from '../dist/index'
 Vue.use(Vuex)
 
 // ______________________________________________________
@@ -9,7 +9,7 @@ Vue.use(Vuex)
 
 const namespace = 'counter'
 
-const CounterModel = injects => ({
+const stateFactory = injects => ({
   count: 0,
   name: 'my name',
   ...injects
@@ -29,30 +29,30 @@ const mutations = {
     state.name = name
   }
 }
-const { inferCommits, mutationTypes } = fromMutations(mutations, namespace)
+const { commits, mutationTypes } = fromMutations(mutations, namespace)
 
 const actions = {
-  async asyncIncrement({ commit }, duration) {
-    inferCommits.increment(commit)
+  async asyncIncrement() {
+    commits.increment()
     return 'asyncIncrement called'
   }
 }
-const { inferDispatches, actionTypes } = fromActions(actions, namespace)
+const { dispatches, actionTypes } = fromActions(actions, namespace)
 
-const CounterModule = injects => ({
+const moduleFactory = injects => ({
   namespaced: true,
-  state: CounterModel(injects),
+  state: stateFactory(injects),
   mutations,
   actions
 })
 
-function createStore () {
-  return new Vuex.Store({
-    modules: {
-      counter: CounterModule({ name: 'COUNTER' })
-    }
-  })
-}
+const store = new Vuex.Store({
+  modules: {
+    counter: moduleFactory({ name: 'COUNTER' })
+  }
+})
+use(store)
+
 
 // ______________________________________________________
 //
@@ -67,44 +67,40 @@ describe('vuex-aggregate', () => {
     test('action types has namespaced value', () => {
       expect(actionTypes.asyncIncrement).toEqual(`${namespace}/asyncIncrement`)
     })
-    test('inferCommits has function', () => {
-      expect(typeof inferCommits.increment === 'function').toBe(true)
+    test('commits has function', () => {
+      expect(typeof commits.increment === 'function').toBe(true)
     })
-    test('inferDispatches has function', () => {
-      expect(typeof inferDispatches.asyncIncrement === 'function').toBe(true)
+    test('dispatches has function', () => {
+      expect(typeof dispatches.asyncIncrement === 'function').toBe(true)
     })
   })
 
   describe('committer works normally', () => {
-    const store = createStore()
     test('count will be increment', () => {
       expect(store.state.counter.count).toEqual(0)
-      inferCommits.increment(store.commit)
+      commits.increment()
       expect(store.state.counter.count).toEqual(1)
     })
   })
 
   describe('committer return void', () => {
-    const store = createStore()
     test('commiter will return undefined', () => {
-      const commitReturn = inferCommits.increment(store.commit)
+      const commitReturn = commits.increment()
       expect(commitReturn).toEqual(undefined)
     })
   })
 
   describe('dispatcher works normally', () => {
-    const store = createStore()
     test('count will be increment', () => {
-      expect(store.state.counter.count).toEqual(0)
-      inferDispatches.asyncIncrement(store.dispatch)
-      expect(store.state.counter.count).toEqual(1)
+      expect(store.state.counter.count).toEqual(2)
+      dispatches.asyncIncrement()
+      expect(store.state.counter.count).toEqual(3)
     })
   })
 
   describe('dispatcher return Promise', () => {
-    const store = createStore()
     test('promise resolve then return value', async () => {
-      const dispatchReturn = await inferDispatches.asyncIncrement(store.dispatch)
+      const dispatchReturn = await dispatches.asyncIncrement()
       expect(dispatchReturn).toEqual('asyncIncrement called')
     })
   })

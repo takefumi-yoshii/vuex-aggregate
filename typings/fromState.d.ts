@@ -3,14 +3,14 @@
 // @ fromState
 
 type StateGetter<T> = (state: T) => any
-type MapStateHelperOption<T> =
+type MapStateOption<T> =
   | Array<keyof T>
   | { [k: string]: keyof T | StateGetter<T> }
 
-type InferMapState<T> = (mapStateHelperOption: MapStateHelperOption<T>) => any
+type MapState<T> = (mapStateOption: MapStateOption<T>) => any
 
 interface FromStateReturn<T> {
-  readonly inferMapState: InferMapState<T>
+  readonly mapState: MapState<T>
 }
 
 // DECL
@@ -20,4 +20,4 @@ declare function fromState<T>(state: T, namespace: string): FromStateReturn<T>
 //
 // @ exports
 
-export { MapStateHelperOption, InferMapState, FromStateReturn, fromState }
+export { MapStateOption, MapState, FromStateReturn, fromState }

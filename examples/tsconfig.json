@@ -7,7 +7,7 @@
     "noImplicitThis": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "lib": [
       "dom",
       "es5",

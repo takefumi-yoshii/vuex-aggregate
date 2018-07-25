@@ -2,8 +2,8 @@ import { mapState } from 'vuex'
 import { KeyMap } from '../typings/utils.d'
 import {
   FromStateReturn,
-  InferMapState,
-  MapStateHelperOption
+  MapState,
+  MapStateOption
 } from '../typings/fromState.d'
 
 const namespaced: KeyMap = {}
@@ -19,14 +19,14 @@ function fromState<T>(state: T, namespace: string): FromStateReturn<T> {
   } else {
     namespaced[namespace] = namespace
   }
-  function inferMapState<O extends MapStateHelperOption<T>>(
-    mapHelperOption: O
+  function _mapState<O extends MapStateOption<T>>(
+    mapOption: O
   ) {
     const mapper = mapState as any
-    return mapper(namespace, mapHelperOption)
+    return mapper(namespace, mapOption)
   }
   return {
-    inferMapState: inferMapState as InferMapState<T>
+    mapState: _mapState as MapState<T>
   }
 }
 

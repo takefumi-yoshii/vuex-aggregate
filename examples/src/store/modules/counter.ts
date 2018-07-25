@@ -4,13 +4,13 @@ import {
   fromActions,
   fromGetters,
   Injects,
-  Modeler
-} from 'vuex-aggregate'
+  StateFactory
+} from '../../../../src'
 import { wait } from '../../utils/promise'
 
 // ______________________________________________________
 //
-// @ Model
+// @ State
 
 const namespace = 'counter'
 
@@ -19,19 +19,19 @@ interface State {
   name: string
   isRunningAutoIncrement: boolean
 }
-const Model: Modeler<State> = injects => ({
+const stateFactory: StateFactory<State> = injects => ({
   count: 0,
   name: 'unknown',
   isRunningAutoIncrement: false,
   ...injects
 })
-const { inferMapState } = fromState(Model(), namespace)
+const { mapState } = fromState(stateFactory(), namespace)
 
 // ______________________________________________________
 //
 // @ Getters
 
-const getters = {
+const _getters = {
   nameLabel(state: State): string {
     return `my name is ${state.name}`
   },
@@ -50,7 +50,7 @@ const getters = {
     }
   }
 }
-const { inferGetters, inferMapGetters } = fromGetters(getters, namespace)
+const { getters, mapGetters } = fromGetters(_getters, namespace)
 
 // ______________________________________________________
 //
@@ -73,7 +73,7 @@ const mutations = {
     state.isRunningAutoIncrement = flag
   }
 }
-const { mutationTypes, inferCommits, inferMapMutations } = fromMutations(
+const { commits, mutationTypes, mapMutations } = fromMutations(
   mutations,
   namespace
 )
@@ -83,26 +83,24 @@ const { mutationTypes, inferCommits, inferMapMutations } = fromMutations(
 // @ Actions
 
 const actions = {
-  async asyncIncrement({ commit }: { commit: Function }, duration: number) {
-    await wait(duration)
-    inferCommits.increment(commit)
+  async asyncIncrement() {
+    await wait(1000)
+    commits.increment()
   },
   async toggleAutoIncrement(
-    { commit, state }: { commit: Function; state: State },
-    { duration, flag }: { duration: number; flag: boolean }
+    { state }: { state: State },
+    { duration }: { duration: number }
   ) {
-    inferCommits.setRunningAutoIncrement(commit, flag)
+    const flag = !state.isRunningAutoIncrement
+    commits.setRunningAutoIncrement(flag)
     while (true) {
       if (!state.isRunningAutoIncrement) break
       await wait(duration)
-      inferCommits.increment(commit)
+      commits.increment()
     }
   }
 }
-const { actionTypes, inferDispatches, inferMapActions } = fromActions(
-  actions,
-  namespace
-)
+const { dispatches, actionTypes, mapActions } = fromActions(actions, namespace)
 
 // ______________________________________________________
 //
@@ -110,8 +108,8 @@ const { actionTypes, inferDispatches, inferMapActions } = fromActions(
 
 const moduleFactory = (injects?: Injects<State>) => ({
   namespaced: true, // Required
-  state: Model(injects),
-  getters,
+  state: stateFactory(injects),
+  getters: _getters,
   mutations,
   actions
 })
@@ -122,11 +120,11 @@ export {
   moduleFactory,
   mutationTypes,
   actionTypes,
-  inferCommits as commits,
-  inferDispatches as dispatches,
-  inferMapState as mapState,
-  inferGetters as getters,
-  inferMapGetters as mapGetters,
-  inferMapMutations as mapMutations,
-  inferMapActions as mapActions,
+  commits,
+  dispatches,
+  mapState,
+  getters,
+  mapGetters,
+  mapMutations,
+  mapActions
 }

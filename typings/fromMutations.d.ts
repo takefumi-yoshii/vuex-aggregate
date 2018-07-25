@@ -1,4 +1,4 @@
-import { KeyMap, A1, A2, Types, MapHelperOption } from './utils.d'
+import { KeyMap, A1, A2, Types, MapOption } from './utils.d'
 
 // ______________________________________________________
 //
@@ -11,15 +11,15 @@ type Mutation<T> = MT<T> | MTPL<T>
 type Mutations<T> = { [K in keyof T]: Mutation<T[K]> }
 
 // OUT
-type CM<T> = (commit: Function) => void
-type CMPL<T> = (commit: Function, payload: A2<T>) => void
+type CM<T> = () => void
+type CMPL<T> = (payload: A2<T>) => void
 type Committer<T> = T extends MT<T> ? CM<T> : CMPL<T>
-type InferCommits<T> = { readonly [K in keyof T]: Committer<T[K]> }
-type InferMapMutations<T> = (mapHelperOption: MapHelperOption<T>) => any
+type Commits<T> = { readonly [K in keyof T]: Committer<T[K]> }
+type MapMutations<T> = (mapOption: MapOption<T>) => any
 interface FromMutationsReturn<T> {
   readonly mutationTypes: Types<T>
-  readonly inferCommits: InferCommits<T>
-  readonly inferMapMutations: InferMapMutations<T>
+  readonly commits: Commits<T>
+  readonly mapMutations: MapMutations<T>
 }
 
 // DECL
@@ -34,8 +34,8 @@ declare function fromMutations<T extends KeyMap & Mutations<T>>(
 
 export {
   Mutations,
-  InferCommits,
-  InferMapMutations,
+  Commits,
+  MapMutations,
   FromMutationsReturn,
   fromMutations
 }
