@@ -13,7 +13,7 @@ Let's reconfirm the vulnerability of Flux pattern at the beginning.
 refactor payload schema @ `examples/src/store/modules/counter.ts`
 
 ```javascript
-increment(state: CounterState): void {
+increment(state: State): void {
   state.count++
 }
 ```
@@ -22,7 +22,7 @@ Did you find various errors?
 You can see that even SFC is reacting.  
 
 ```javascript
-addCount(state: CounterState): void {
+addCount(state: State): void {
   state.count++
 }
 ```
@@ -32,7 +32,7 @@ addCount(state: CounterState): void {
 refactor payload schema @ `examples/src/store/modules/counter.ts`
 
 ```javascript
-setName(state: CounterState, name: string): void {
+setName(state: State, name: string): void {
   state.name = name
 }
 ```
@@ -41,7 +41,7 @@ Try convert it to another type ex:)number.
 You can reconfirm the need for a Types.  
 
 ```javascript
-setName(state: CounterState, payload: { name: string }): void {
+setName(state: State, payload: { name: string }): void {
   state.name = payload.name
 }
 ```
@@ -52,8 +52,8 @@ refactor payload schema @ `examples/src/store/modules/counter.ts`
 
 ```javascript
 async toggleAutoIncrement(
-  { commit, state }: { commit: Function; state: State },
-  { duration, flag }: { duration: number; flag: boolean }
+  { state }: { state: State },
+  { duration }: { duration: number }
 ) {
 ```
 Even if you do not need a payload, an error will occur if given payload.  
@@ -61,8 +61,7 @@ According to specifications, actions expect to return Promise and inferred types
 
 ```javascript
 async toggleAutoIncrement(
-  { commit, state }: { commit: Function; state: State },
-  { flag }: { flag: boolean }
+  { state }: { state: State }
 ) {
 ```
 
@@ -159,26 +158,24 @@ const { commits, mutationTypes, mapMutations } = fromMutations(
 // @ Actions
 
 const actions = {
-  async asyncIncrement({ commit }: { commit: Function }, duration: number) {
-    await wait(duration)
-    commits.increment(commit)
+  async asyncIncrement() {
+    await wait(1000)
+    commits.increment()
   },
   async toggleAutoIncrement(
-    { commit, state }: { commit: Function; state: State },
-    { duration, flag }: { duration: number; flag: boolean }
+    { state }: { state: State },
+    { duration }: { duration: number }
   ) {
-    commits.setRunningAutoIncrement(commit, flag)
+    const flag = !state.isRunningAutoIncrement
+    commits.setRunningAutoIncrement(flag)
     while (true) {
       if (!state.isRunningAutoIncrement) break
       await wait(duration)
-      commits.increment(commit)
+      commits.increment()
     }
   }
 }
-const { dispatches, actionTypes, mapActions } = fromActions(
-  actions,
-  namespace
-)
+const { dispatches, actionTypes, mapActions } = fromActions(actions, namespace)
 ```
 vuex-aggregate assumed to use shallow modules.
 Please specify `namespaced: true` at module.
