@@ -30,10 +30,10 @@ const computed: ThisType<BoundsStore> = {
   }),
   ...Counter.mapGetters(['nameLabel', 'autoIncrementLabel']),
   countLabel() {
-    return Counter.getters.countLabel(this.$store.getters, 'pt')
+    return Counter.getters.countLabel('pt')
   },
   expo2() {
-    return Counter.getters.expo(this.$store.getters, 2)
+    return Counter.getters.expo(2)
   }
 }
 
@@ -41,11 +41,11 @@ const methods: ThisType<BoundsStore> = {
   ...Counter.mapMutations(['increment', 'decrement']),
   ...Counter.mapActions(['asyncIncrement']),
   setName(value: string) {
-    Counter.commits.setName(this.$store.commit, value)
+    Counter.commits.setName(value)
   },
   toggleAutoIncrement(duration: number) {
     const flag = !this.$store.state.counter.isRunningAutoIncrement
-    Counter.dispatches.toggleAutoIncrement(this.$store.dispatch, {
+    Counter.dispatches.toggleAutoIncrement({
       duration,
       flag
     })

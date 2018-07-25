@@ -11,8 +11,8 @@ type Mutation<T> = MT<T> | MTPL<T>
 type Mutations<T> = { [K in keyof T]: Mutation<T[K]> }
 
 // OUT
-type CM<T> = (commit: Function) => void
-type CMPL<T> = (commit: Function, payload: A2<T>) => void
+type CM<T> = () => void
+type CMPL<T> = (payload: A2<T>) => void
 type Committer<T> = T extends MT<T> ? CM<T> : CMPL<T>
 type InferCommits<T> = { readonly [K in keyof T]: Committer<T[K]> }
 type InferMapMutations<T> = (mapHelperOption: MapHelperOption<T>) => any

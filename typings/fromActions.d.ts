@@ -11,8 +11,8 @@ type Action<T> = AC<T> | ACPL<T>
 type Actions<T> = { [K in keyof T]: Action<T[K]> }
 
 // OUT
-type DP<T> = (diapatch: Function) => Promise<any>
-type DPPL<T> = (diapatch: Function, payload: A2<T>) => Promise<any>
+type DP<T> = () => Promise<any>
+type DPPL<T> = (payload: A2<T>) => Promise<any>
 type Dispatcher<T> = T extends AC<T> ? DP<T> : DPPL<T>
 type InferDispatches<T> = { readonly [K in keyof T]: Dispatcher<T[K]> }
 type InferMapActions<T> = (mapHelperOption: MapHelperOption<T>) => any

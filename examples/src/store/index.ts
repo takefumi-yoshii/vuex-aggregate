@@ -1,21 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as VuexAggregate from '../../../src'
 import * as Counter from './modules/counter'
 
 // ______________________________________________________
 //
 // @ Types
 
-export interface StoreState {
+interface StoreState {
   counter: Counter.State
 }
-export interface Store {
+interface Store {
   state: StoreState
-  commit: Function
-  dispatch: Function
-  getters: any
 }
-export interface BoundsStore {
+interface BoundsStore {
   $store: Store
 }
 
@@ -23,8 +21,12 @@ export interface BoundsStore {
 
 Vue.use(Vuex)
 
-export const store = new Vuex.Store({
+const store = new Vuex.Store({
   modules: {
     [Counter.namespace]: Counter.moduleFactory({ name: 'COUNTER' })
   }
 })
+
+VuexAggregate.use(store)
+
+export { StoreState, Store, BoundsStore, store }

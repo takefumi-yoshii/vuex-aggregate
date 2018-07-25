@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex'
+import { store } from './utils'
 import { KeyMap, MapHelperOption } from '../typings/utils.d'
 import {
   Getters,
@@ -26,9 +27,10 @@ function fromGetters<T extends KeyMap & Getters<T>>(
   const inferGetters: KeyMap = {}
   Object.keys(getters).forEach(key => {
     const getterKey = `${namespace}/${key}`
-    inferGetters[key] = (state: KeyMap, args?: any) => {
-      if (typeof state[getterKey] !== 'function') return state[getterKey]
-      return state[getterKey](args)
+    inferGetters[key] = (args?: any) => {
+      if (typeof store.getters[getterKey] !== 'function')
+        return store.getters[getterKey]
+      return store.getters[getterKey](args)
     }
   })
   function inferMapGetters<O extends MapHelperOption<T>>(mapHelperOption: O) {

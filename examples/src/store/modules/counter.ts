@@ -5,7 +5,7 @@ import {
   fromGetters,
   Injects,
   Modeler
-} from 'vuex-aggregate'
+} from '../../../../src'
 import { wait } from '../../utils/promise'
 
 // ______________________________________________________
@@ -83,19 +83,19 @@ const { mutationTypes, inferCommits, inferMapMutations } = fromMutations(
 // @ Actions
 
 const actions = {
-  async asyncIncrement({ commit }: { commit: Function }, duration: number) {
+  async asyncIncrement(context: any, duration: number) {
     await wait(duration)
-    inferCommits.increment(commit)
+    inferCommits.increment()
   },
   async toggleAutoIncrement(
-    { commit, state }: { commit: Function; state: State },
+    { state }: { state: State },
     { duration, flag }: { duration: number; flag: boolean }
   ) {
-    inferCommits.setRunningAutoIncrement(commit, flag)
+    inferCommits.setRunningAutoIncrement(flag)
     while (true) {
       if (!state.isRunningAutoIncrement) break
       await wait(duration)
-      inferCommits.increment(commit)
+      inferCommits.increment()
     }
   }
 }
@@ -128,5 +128,5 @@ export {
   inferGetters as getters,
   inferMapGetters as mapGetters,
   inferMapMutations as mapMutations,
-  inferMapActions as mapActions,
+  inferMapActions as mapActions
 }
