@@ -2,7 +2,7 @@
   "name": "vuex-aggregate",
   "version": "4.0.1",
   "description": "Inferred types for vuex",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "typings": "typings/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
