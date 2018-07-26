@@ -27,7 +27,7 @@ function fromMutations<T extends KeyMap & Mutations<T>>(
   const mutationTypes: KeyMap = {}
   const commits: KeyMap = {}
   Object.keys(mutations).forEach(key => {
-    const type = `${namespace}/${key}`
+    const type = namespace === '' ? key : `${namespace}/${key}`
     mutationTypes[key] = type
     commits[key] = (payload?: any) => {
       return store.commit(type, payload, { root: true })
@@ -35,7 +35,7 @@ function fromMutations<T extends KeyMap & Mutations<T>>(
   })
   function _mapMutations<O extends MapOption<T>>(mapOption: O) {
     const mapper = mapMutations as any
-    return mapper(namespace, mapOption)
+    return namespace === '' ? mapper(mapOption) : mapper(namespace, mapOption)
   }
   return {
     mutationTypes: mutationTypes as Types<T>,

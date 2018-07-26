@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as VuexAggregate from 'vuex-aggregate'
+import * as VuexAggregate from '../../../src'
+import { rootFactory } from './root'
 import * as Counter from './modules/counter'
 
 // ______________________________________________________
@@ -8,6 +9,7 @@ import * as Counter from './modules/counter'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  ...rootFactory({ name: 'ROOT' }),
   modules: {
     [Counter.namespace]: Counter.moduleFactory({ name: 'COUNTER' })
   }

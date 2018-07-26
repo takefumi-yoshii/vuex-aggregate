@@ -27,7 +27,7 @@ function fromActions<T extends KeyMap & Actions<T>>(
   const actionTypes: KeyMap = {}
   const dispatches: KeyMap = {}
   Object.keys(actions).forEach(key => {
-    const type = `${namespace}/${key}`
+    const type = namespace === '' ? key : `${namespace}/${key}`
     actionTypes[key] = type
     dispatches[key] = (payload?: any) => {
       return store.dispatch(type, payload, { root: true })
@@ -35,7 +35,7 @@ function fromActions<T extends KeyMap & Actions<T>>(
   })
   function _mapActions<O extends MapOption<T>>(mapOption: O) {
     const mapper = mapActions as any
-    return mapper(namespace, mapOption)
+    return namespace === '' ? mapper(mapOption) : mapper(namespace, mapOption)
   }
   return {
     actionTypes: actionTypes as Types<T>,

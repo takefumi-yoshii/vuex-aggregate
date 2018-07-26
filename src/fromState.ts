@@ -21,7 +21,7 @@ function fromState<T>(state: T, namespace: string): FromStateReturn<T> {
   }
   function _mapState<O extends MapStateOption<T>>(mapOption: O) {
     const mapper = mapState as any
-    return mapper(namespace, mapOption)
+    return namespace === '' ? mapper(mapOption) : mapper(namespace, mapOption)
   }
   return {
     mapState: _mapState as MapState<T>

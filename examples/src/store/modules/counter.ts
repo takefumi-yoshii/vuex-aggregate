@@ -5,8 +5,9 @@ import {
   fromGetters,
   Injects,
   StateFactory
-} from 'vuex-aggregate'
+} from '../../../../src'
 import { wait } from '../../utils/promise'
+import * as Root from '../root'
 
 // ______________________________________________________
 //
@@ -32,7 +33,13 @@ const { mapState } = fromState(stateFactory(), namespace)
 // @ Getters
 
 const _getters = {
-  nameLabel(state: State): string {
+  nameLabel(
+    state: State,
+    getters: any,
+    rootState = Root.state, // initial props for InferredType
+    rootGetters = Root.getters // initial props for InferredType
+  ): string {
+    console.log(`root name is ${rootState.name}. rootGetters nameLabel = ${rootGetters.nameLabel}`)
     return `my name is ${state.name}`
   },
   autoIncrementLabel(state: State): string {
@@ -111,7 +118,8 @@ const moduleFactory = (injects?: Injects<State>) => ({
   state: stateFactory(injects),
   getters: _getters,
   mutations,
-  actions
+  actions,
+  // modules: Don't use nested modules. if you need them, resolve in file namespace.
 })
 
 export {

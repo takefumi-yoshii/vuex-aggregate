@@ -26,16 +26,16 @@ function fromGetters<T extends KeyMap & IGetters<T>>(
   }
   const _getters: KeyMap = {}
   Object.keys(getters).forEach(key => {
-    const getterKey = `${namespace}/${key}`
+    const type = namespace === '' ? key : `${namespace}/${key}`
     _getters[key] = (args?: any) => {
-      if (typeof store.getters[getterKey] !== 'function')
-        return store.getters[getterKey]
-      return store.getters[getterKey](args)
+      const gfn = store.getters[type]
+      if (typeof gfn !== 'function') return gfn
+      return gfn(args)
     }
   })
   function _mapGetters<O extends MapOption<T>>(mapOption: O) {
     const mapper = mapGetters as any
-    return mapper(namespace, mapOption)
+    return namespace === '' ? mapper(mapOption) : mapper(namespace, mapOption)
   }
   return {
     getters: _getters as Getters<T>,

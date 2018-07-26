@@ -1,5 +1,7 @@
 <template>
   <div>
+    <p>rootName = {{rootName}}</p>
+    <p>rootNameLabel = {{rootNameLabel}}</p>
     <p>count = {{count}}</p>
     <p>double = {{double}}</p>
     <p>expo2 = {{expo2}}</p>
@@ -20,9 +22,12 @@
 
 <script lang='ts'>
 import Vue from 'vue'
+import * as Root from '../store/root'
 import * as Counter from '../store/modules/counter'
 
 const computed = {
+  ...Root.mapState({ rootName: 'name' }),
+  ...Root.mapGetters({ rootNameLabel: 'nameLabel' }),
   ...Counter.mapState(['count']),
   ...Counter.mapState({ double: state => state.count * 2 }),
   ...Counter.mapGetters(['nameLabel', 'autoIncrementLabel']),
