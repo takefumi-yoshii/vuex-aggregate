@@ -11,16 +11,15 @@ refactor State schema @ `examples/src/store/modules/counter.ts`
 
 ```javascript
 interface State {
-  number: number
+  count: number
   name: string
   isRunningAutoIncrement: boolean
 }
-const stateFactory: StateFactory<State> = injects => ({
-  number: 0,
+const state = {
+  count: 0,
   name: 'unknown',
-  isRunningAutoIncrement: false,
-  ...injects
-})
+  isRunningAutoIncrement: false
+}
 ```
 Let's change the above state as follows.  
 **With vuex-aggretate, you can raise errors up to mapHelper on SFC.**
@@ -31,12 +30,11 @@ interface State {
   name: string
   isRunningAutoIncrement: boolean
 }
-const stateFactory: StateFactory<State> = injects => ({
+const state = {
   amount: 0, // here
   name: 'unknown',
-  isRunningAutoIncrement: false,
-  ...injects
-})
+  isRunningAutoIncrement: false
+}
 ```
 
 # Usage
@@ -67,13 +65,12 @@ interface State {
   name: string
   isRunningAutoIncrement: boolean
 }
-const stateFactory: StateFactory<State> = injects => ({
+const state = {
   count: 0,
   name: 'unknown',
-  isRunningAutoIncrement: false,
-  ...injects
-})
-const { mapState } = fromState(stateFactory(), namespace)
+  isRunningAutoIncrement: false
+}
+const { mapState } = fromState(state, namespace)
 
 // ______________________________________________________
 //
