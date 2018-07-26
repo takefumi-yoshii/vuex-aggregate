@@ -16,9 +16,10 @@ type Types<T> = { readonly [K in keyof T]: string }
 type MapOption<T> = Array<keyof T> | { [k: string]: keyof T }
 type Injects<T> = { [P in keyof T]?: T[P] }
 type StateFactory<T> = (injects?: Injects<T>) => T
+declare function use(store: any): void
 
 // ______________________________________________________
 //
 // @ exports
 
-export { KeyMap, R, A1, A2, RR, RA1, Types, MapOption, Injects, StateFactory }
+export { KeyMap, R, A1, A2, RR, RA1, Types, MapOption, use, Injects, StateFactory }
