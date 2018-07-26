@@ -32,10 +32,4 @@ declare function fromGetters<T extends KeyMap & IGetters<T>>(
 //
 // @ exports
 
-export {
-  IGetters,
-  Getters,
-  MapGetters,
-  FromGettersReturn,
-  fromGetters
-}
+export { IGetters, Getters, MapGetters, FromGettersReturn, fromGetters }

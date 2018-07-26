@@ -22,4 +22,16 @@ declare function use(store: any): void
 //
 // @ exports
 
-export { KeyMap, R, A1, A2, RR, RA1, Types, MapOption, use, Injects, StateFactory }
+export {
+  KeyMap,
+  R,
+  A1,
+  A2,
+  RR,
+  RA1,
+  Types,
+  MapOption,
+  use,
+  Injects,
+  StateFactory
+}

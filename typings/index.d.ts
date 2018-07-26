@@ -8,4 +8,12 @@ import { use, Injects, StateFactory } from './utils'
 //
 // @ exports
 
-export { fromState, fromGetters, fromMutations, fromActions, use, Injects, StateFactory }
+export {
+  fromState,
+  fromGetters,
+  fromMutations,
+  fromActions,
+  use,
+  Injects,
+  StateFactory
+}

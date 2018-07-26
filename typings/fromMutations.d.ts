@@ -32,10 +32,4 @@ declare function fromMutations<T extends KeyMap & Mutations<T>>(
 //
 // @ exports
 
-export {
-  Mutations,
-  Commits,
-  MapMutations,
-  FromMutationsReturn,
-  fromMutations
-}
+export { Mutations, Commits, MapMutations, FromMutationsReturn, fromMutations }

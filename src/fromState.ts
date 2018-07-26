@@ -19,9 +19,7 @@ function fromState<T>(state: T, namespace: string): FromStateReturn<T> {
   } else {
     namespaced[namespace] = namespace
   }
-  function _mapState<O extends MapStateOption<T>>(
-    mapOption: O
-  ) {
+  function _mapState<O extends MapStateOption<T>>(mapOption: O) {
     const mapper = mapState as any
     return mapper(namespace, mapOption)
   }
