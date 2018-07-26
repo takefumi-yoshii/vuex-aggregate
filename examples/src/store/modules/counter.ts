@@ -20,13 +20,13 @@ interface State {
   name: string
   isRunningAutoIncrement: boolean
 }
-const stateFactory: StateFactory<State> = injects => ({
+const state = {
   count: 0,
   name: 'unknown',
-  isRunningAutoIncrement: false,
-  ...injects
-})
-const { mapState } = fromState(stateFactory(), namespace)
+  isRunningAutoIncrement: false
+}
+const stateFactory: StateFactory<State> = injects => ({ ...state, ...injects })
+const { mapState } = fromState(state, namespace)
 
 // ______________________________________________________
 //

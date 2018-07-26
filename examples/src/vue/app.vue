@@ -2,6 +2,8 @@
   <div>
     <p>rootName = {{rootName}}</p>
     <p>rootNameLabel = {{rootNameLabel}}</p>
+    <p>nestedModuleName = {{nestedModuleName}}</p>
+    <p>nestedModuleNameLabel = {{nestedModuleNameLabel}}</p>
     <p>count = {{count}}</p>
     <p>double = {{double}}</p>
     <p>expo2 = {{expo2}}</p>
@@ -24,10 +26,13 @@
 import Vue from 'vue'
 import * as Root from '../store/root'
 import * as Counter from '../store/modules/counter'
+import * as NestedModule from '../store/modules/nested/module'
 
 const computed = {
   ...Root.mapState({ rootName: 'name' }),
   ...Root.mapGetters({ rootNameLabel: 'nameLabel' }),
+  ...NestedModule.mapState({ nestedModuleName: 'name' }),
+  ...NestedModule.mapGetters({ nestedModuleNameLabel: 'nameLabel' }),
   ...Counter.mapState(['count']),
   ...Counter.mapState({ double: state => state.count * 2 }),
   ...Counter.mapGetters(['nameLabel', 'autoIncrementLabel']),
