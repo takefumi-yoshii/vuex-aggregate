@@ -7,7 +7,7 @@ Inferred types helper module for Vuex.(Required TypeScript2.8 or higher)
 
 ### Why need TypeScript on Vuex?
 
-refactor payload schema @ `examples/src/store/modules/counter.ts`
+refactor State schema @ `examples/src/store/modules/counter.ts`
 
 ```javascript
 interface State {
@@ -41,8 +41,8 @@ const stateFactory: StateFactory<State> = injects => ({
 
 # Usage
 
-Wrap your mutations and actions with unique namespace by vuex-aggregate provided APIs.  
-`fromMutations` is for mutations, `fromActions` is for actions, `fromGetters` is for getters.  
+Wrap your module parts with unique namespace by vuex-aggregate provided APIs.  
+`fromState` is for state,`fromMutations` is for mutations,`fromActions` is for actions,`fromGetters` is for getters.  
 `namespace` must to be match modulename.
 
 ```javascript

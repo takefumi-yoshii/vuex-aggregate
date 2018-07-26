@@ -9,7 +9,7 @@ launched dev-server on http://localhost:1234/
 
 ### Try refactor state.
 
-refactor payload schema @ `src/store/modules/counter.ts`
+refactor State schema @ `src/store/modules/counter.ts`
 
 ```javascript
 interface State {
