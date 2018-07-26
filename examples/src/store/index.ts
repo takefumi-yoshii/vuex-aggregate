@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as VuexAggregate from '../../../src'
+import * as VuexAggregate from 'vuex-aggregate'
 import * as Counter from './modules/counter'
 
 // ______________________________________________________
