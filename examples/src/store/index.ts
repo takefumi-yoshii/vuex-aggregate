@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as VuexAggregate from '../../../src'
+import * as VuexAggregate from 'vuex-aggregate'
 import { rootFactory } from './root'
 import * as Counter from './modules/counter'
 import * as NestedModule from './modules/nested/module'

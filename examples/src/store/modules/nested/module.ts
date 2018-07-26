@@ -4,7 +4,7 @@ import {
   fromGetters,
   Injects,
   StateFactory
-} from '../../../../../src'
+} from 'vuex-aggregate'
 
 // ______________________________________________________
 //

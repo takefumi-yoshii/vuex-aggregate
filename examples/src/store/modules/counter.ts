@@ -5,7 +5,7 @@ import {
   fromGetters,
   Injects,
   StateFactory
-} from '../../../../src'
+} from 'vuex-aggregate'
 import { wait } from '../../utils/promise'
 import * as Root from '../root'
 
