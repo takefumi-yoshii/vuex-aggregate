@@ -4,67 +4,40 @@
 [![CircleCI](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate.svg?style=svg)](https://circleci.com/gh/takefumi-yoshii/vuex-aggregate)
 
 Inferred types helper module for Vuex.(Required TypeScript2.8 or higher) 
-Generated commits provide `store.commit` proxy, and 
-Generated dispatches provide `store.dispatch` proxy with inferred types. 
-Let's reconfirm the vulnerability of Flux pattern at the beginning.
 
-### Try refactor mutation name.
+### Why need TypeScript on Vuex?
 
 refactor payload schema @ `examples/src/store/modules/counter.ts`
 
 ```javascript
-increment(state: State): void {
-  state.count++
+interface State {
+  number: number
+  name: string
+  isRunningAutoIncrement: boolean
 }
+const stateFactory: StateFactory<State> = injects => ({
+  number: 0,
+  name: 'unknown',
+  isRunningAutoIncrement: false,
+  ...injects
+})
 ```
-Let's change the above mutation as follows.  
-Did you find various errors?  
-You can see that even SFC is reacting.  
+Let's change the above state as follows.  
+**With vuex-aggretate, you can raise errors up to mapHelper on SFC.**
 
 ```javascript
-addCount(state: State): void {
-  state.count++
+interface State {
+  amount: number // here
+  name: string
+  isRunningAutoIncrement: boolean
 }
+const stateFactory: StateFactory<State> = injects => ({
+  amount: 0, // here
+  name: 'unknown',
+  isRunningAutoIncrement: false,
+  ...injects
+})
 ```
-
-### Try refactor mutation payload schema.
-
-refactor payload schema @ `examples/src/store/modules/counter.ts`
-
-```javascript
-setName(state: State, name: string): void {
-  state.name = name
-}
-```
-Change the Payload type of the above mutation as follows.  
-Try convert it to another type ex:)number.  
-You can reconfirm the need for a Types.  
-
-```javascript
-setName(state: State, payload: { name: string }): void {
-  state.name = payload.name
-}
-```
-
-### Try refactor action payload schema.
-
-refactor payload schema @ `examples/src/store/modules/counter.ts`
-
-```javascript
-async toggleAutoIncrement(
-  { state }: { state: State },
-  { duration }: { duration: number }
-) {
-```
-Even if you do not need a payload, an error will occur if given payload.  
-According to specifications, actions expect to return Promise and inferred types return Promise.  
-
-```javascript
-async toggleAutoIncrement(
-  { state }: { state: State }
-) {
-```
-
 
 # Usage
 

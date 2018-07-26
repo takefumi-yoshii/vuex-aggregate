@@ -7,6 +7,40 @@ $ yarn start
 
 launched dev-server on http://localhost:1234/
 
+### Try refactor state.
+
+refactor payload schema @ `src/store/modules/counter.ts`
+
+```javascript
+interface State {
+  number: number
+  name: string
+  isRunningAutoIncrement: boolean
+}
+const stateFactory: StateFactory<State> = injects => ({
+  number: 0,
+  name: 'unknown',
+  isRunningAutoIncrement: false,
+  ...injects
+})
+```
+Let's change the above state as follows.  
+**With vuex-aggretate, you can raise errors up to mapHelper on SFC.**
+
+```javascript
+interface State {
+  amount: number // here
+  name: string
+  isRunningAutoIncrement: boolean
+}
+const stateFactory: StateFactory<State> = injects => ({
+  amount: 0, // here
+  name: 'unknown',
+  isRunningAutoIncrement: false,
+  ...injects
+})
+```
+
 ### Try refactor mutation name.
 
 refactor payload schema @ `src/store/modules/counter.ts`
