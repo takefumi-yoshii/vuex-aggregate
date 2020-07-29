@@ -22,21 +22,21 @@
   },
   "homepage": "https://github.com/takefumi-yoshii/vuex-aggregate#readme",
   "dependencies": {
-    "vue": "^2.5.16",
-    "vuex": "^3.0.1"
+    "vue": "^2.6.11",
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@types/node": "^10.5.2",
-    "babel-jest": "^23.4.0",
+    "@types/node": "^14.0.27",
+    "babel-jest": "^26.1.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-2": "^6.24.1",
-    "jest": "^23.4.1",
-    "prettier": "^1.13.7",
-    "ts-node": "^7.0.0",
-    "typescript": ">=2.8.0",
-    "typescript-eslint-parser": "^16.0.1",
-    "vue-jest": "^2.6.0"
+    "jest": "^26.1.0",
+    "prettier": "^2.0.5",
+    "ts-node": "^8.10.2",
+    "typescript": ">=3.9.7",
+    "typescript-eslint-parser": "^22.0.0",
+    "vue-jest": "^3.0.6"
   },
   "jest": {
     "moduleFileExtensions": [
